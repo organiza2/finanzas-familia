@@ -106,7 +106,8 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .rl{flex:1;font-size:13px;min-width:0;}
 .lock{font-size:13px;cursor:pointer;opacity:.3;transition:opacity .15s;flex-shrink:0;user-select:none;}
 .lock.on{opacity:1;}
-.inp{width:100px;text-align:right;font-size:13px;font-family:'DM Mono',monospace;padding:6px 8px;border:1.5px solid #e8e6e0;border-radius:10px;background:#fafaf8;outline:none;transition:border-color .2s;}
+.inp{width:100px;text-align:right;font-size:13px;font-family:'DM Mono',monospace;padding:6px 8px;border:1.5px solid #e8e6e0;border-radius:10px;background:#fafaf8;outline:none;transition:border-color .2s;-moz-appearance:textfield;}
+.inp::-webkit-outer-spin-button,.inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .inp:focus{border-color:#1D9E75;}
 .inp.fx{border-color:#9FE1CB;background:#E1F5EE;}
 .inp.bd{border-color:#C5D9FF;background:#EEF4FF;color:#1E3A8A;}
@@ -312,23 +313,23 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
   <div class="ntot"><div><div class="ntl">Total neto familiar</div><div class="ntv" id="nomTot">$0</div></div><div style="text-align:right;"><div class="ntl">Mes</div><div style="font-size:13px;color:#fff;font-weight:500;" id="nomMes"></div></div></div>
   <div class="np">
     <div class="nh"><span class="nn">Jaime</span><span class="nbj">Empleado</span></div>
-    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" id="jb" min="0" step="10000" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" inputmode="numeric" id="jb" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="row"><span class="rl">Seguridad social</span><span style="font-size:11px;color:#9b9b97;">8%</span><input class="inp au" type="text" id="jss" readonly placeholder="$0"/></div>
     <div class="row"><span class="rl">Fondo de solidaridad</span><span style="font-size:11px;color:#9b9b97;">1%</span><input class="inp au" type="text" id="jfs" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" id="jr" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" id="ja" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" id="jm" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" inputmode="numeric" id="jr" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" inputmode="numeric" id="ja" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" inputmode="numeric" id="jm" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="ndiv"></div>
     <div class="nnet"><span class="nnl">💚 Neto Jaime</span><span class="nnv" id="jn">$0</span></div>
   </div>
   <div class="np">
     <div class="nh"><span class="nn">Anny</span><span class="nba">Empleada</span></div>
-    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" id="ab2" min="0" step="10000" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" inputmode="numeric" id="ab2" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="row"><span class="rl">Seguridad social</span><span style="font-size:11px;color:#9b9b97;">8%</span><input class="inp au" type="text" id="ass" readonly placeholder="$0"/></div>
     <div class="row"><span class="rl">Fondo de solidaridad</span><span style="font-size:11px;color:#9b9b97;">1%</span><input class="inp au" type="text" id="afs" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" id="ar" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" id="aa2" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" id="am2" min="0" step="1000" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" inputmode="numeric" id="ar" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" inputmode="numeric" id="aa2" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" inputmode="numeric" id="am2" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="ndiv"></div>
     <div class="nnet"><span class="nnl">💚 Neto Anny</span><span class="nnv" id="an">$0</span></div>
   </div>
@@ -342,7 +343,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
   <div class="dcard"><div><div class="dcl">Total del día</div><div class="dca" id="dTotal">$0</div><div class="dcc" id="dCount">0 gastos</div></div><div class="dci">🐜</div></div>
   <div class="dform">
     <div class="dft">Registrar gasto</div>
-    <div class="daw"><span class="dap">$</span><input class="dai" type="number" id="dAmt" placeholder="0" min="0" step="1000"/></div>
+    <div class="daw"><span class="dap">$</span><input class="dai" type="number" inputmode="numeric" id="dAmt" placeholder="0" min="0"/></div>
     <div class="dfields">
       <select class="dsel" id="dCat"></select>
       <input class="dnote" type="text" id="dNote" placeholder="Nota (opcional)"/>
@@ -449,7 +450,19 @@ function subMonth(){
   renderMLabel();
   unsub=db.ref(dKey(curY,curM)).on('value',snap=>{
     const v=snap.val();
-    if(v){D=v;}else{loadFixed();return;}
+    if(v){
+      D=v;
+      // Limpiar ítems que solo aplican en ciertos meses
+      if(D.categories){
+        D.categories.forEach(cat=>{
+          cat.items.forEach(item=>{
+            if(item.months && !item.months.includes(curM)){
+              item.value=0;
+            }
+          });
+        });
+      }
+    }else{loadFixed();return;}
     renderAll();setSS('ok');
   });
 }
@@ -514,7 +527,11 @@ window.addCat=function(){const l=document.getElementById('ncLbl').value.trim();i
 window.addItem=function(ci){const l=document.getElementById('ni'+ci).value.trim();if(!l)return;D.categories[ci].items.push({label:l,value:0,budget:0,fixed:false,by:user});document.getElementById('ni'+ci).value='';renderAll();save();};
 window.delItem=function(ci,ri){D.categories[ci].items.splice(ri,1);renderAll();save();};
 window.delCat=function(ci){D.categories.splice(ci,1);renderAll();save();};
-window.updExp=function(ci,ri,v){const val=parseFloat(v)||0;D.categories[ci].items[ri].value=val;D.categories[ci].items[ri].by=user;recalc();save();if(val>0)logH('expense','Registró: '+D.categories[ci].items[ri].label,val,D.categories[ci].name);};
+window.updExp=function(ci,ri,v){
+  const item=D.categories[ci].items[ri];
+  if(item.months && !item.months.includes(curM)){toast('⚠️ Este ítem no aplica en '+MONTHS[curM]);return;}
+  const val=parseFloat(v)||0;item.value=val;item.by=user;recalc();save();if(val>0)logH('expense','Registró: '+item.label,val,D.categories[ci].name);
+};
 window.updBud=function(ci,ri,v){const val=parseFloat(v)||0;D.categories[ci].items[ri].budget=val;recalc();renderBudget();save();if(val>0)logH('budget','Presupuestó: '+D.categories[ci].items[ri].label,val,D.categories[ci].name);};
 window.togFx=function(ci,ri){D.categories[ci].items[ri].fixed=!D.categories[ci].items[ri].fixed;renderAll();save();toast(D.categories[ci].items[ri].fixed?'🔒 Gasto fijo':'🔓 Desmarcado');};
 
@@ -602,7 +619,7 @@ function renderAll(){
     <div class="row">
       <span class="rl">${r.label}${r.by?`<span class="chip ${r.by.toLowerCase()}" style="font-size:9px;padding:1px 5px;margin-left:4px;">${r.by[0]}</span>`:''}</span>
       <span class="lock ${r.fixed?'on':''}" onclick="togFxInc(${i})">🔒</span>
-      <input class="inp ${r.fixed?'fx':''}" type="number" min="0" step="1000" value="${r.value||''}" placeholder="0" oninput="updInc(${i},this.value)"/>
+      <input class="inp ${r.fixed?'fx':''}" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" oninput="updInc(${i},this.value)"/>
       <button class="del" onclick="delInc(${i})">&#215;</button>
     </div>`).join('');
 
@@ -620,7 +637,7 @@ function renderAll(){
         return`<div class="row">
           <span class="rl">${r.label}${r.by?`<span class="chip ${r.by.toLowerCase()}" style="font-size:9px;padding:1px 5px;margin-left:3px;">${r.by[0]}</span>`:''}${ms?`<span class="mbadge">${ms}</span>`:''}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
-          <input class="inp ${r.fixed?'fx':''} ${r.budget>0&&(r.value||0)>r.budget?'ov':''}" type="number" min="0" step="1000" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)"/>
+          <input class="inp ${r.fixed?'fx':''} ${r.budget>0&&(r.value||0)>r.budget?'ov':''}" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
         </div>`;
       }).join('')}
@@ -643,8 +660,8 @@ function renderBudget(){
         <div class="row">
           <span class="rl">${r.label}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
-          <input class="inp bd" type="number" min="0" step="1000" value="${r.budget||''}" placeholder="0" oninput="updBud(${ci},${ri},this.value)"/>
-          <input class="inp" type="number" min="0" step="1000" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)" style="background:#fafaf8;"/>
+          <input class="inp bd" type="number" inputmode="numeric" min="0" value="${r.budget||''}" placeholder="0" oninput="updBud(${ci},${ri},this.value)"/>
+          <input class="inp" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)" style="background:#fafaf8;"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
         </div>`).join('')}
     </div>`;
