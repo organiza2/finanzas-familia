@@ -724,7 +724,11 @@ function subMonth(){
     }else{
       loadFixed();return;
     }
-    renderAll();setSS('ok');
+    renderAll();
+    if(curTab==='b') renderBudget();
+    if(curTab==='n') loadNomFields();
+    if(curTab==='e') loadEmpFields();
+    setSS('ok');
   });
 }
 
@@ -746,7 +750,11 @@ async function loadFixed(){
     }
     D=nd;
   }catch(e){D=defD();}
-  renderAll();setSS('ok');
+  renderAll();
+  if(curTab==='b') renderBudget();
+  if(curTab==='n') loadNomFields();
+  if(curTab==='e') loadEmpFields();
+  setSS('ok');
 }
 
 function renderMLabel(){
@@ -798,11 +806,16 @@ window.updExp=function(ci,ri,v){
   if(item.months&&!item.months.includes(curM)){
     toast('⚠️ Solo aplica en: '+item.months.map(x=>MSHORT[x]).join(', '));return;
   }
-  const val=parseFloat(v)||0;item.value=val;item.by=user;recalc();save();
+  const val=parseFloat(v)||0;item.value=val;item.by=user;
+  recalc();
+  save();
   if(val>0)logH('expense','Registró: '+item.label,val,D.categories[ci].name);
 };
 window.updBud=function(ci,ri,v){
-  const val=parseFloat(v)||0;D.categories[ci].items[ri].budget=val;recalc();save();
+  const val=parseFloat(v)||0;D.categories[ci].items[ri].budget=val;
+  recalc();
+  if(curTab==='m') renderAll();
+  save();
   if(val>0)logH('budget','Presupuestó: '+D.categories[ci].items[ri].label,val,D.categories[ci].name);
 };
 window.togFx=function(ci,ri){D.categories[ci].items[ri].fixed=!D.categories[ci].items[ri].fixed;renderAll();save();toast(D.categories[ci].items[ri].fixed?'🔒 Gasto fijo':'🔓 Desmarcado');};
