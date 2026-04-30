@@ -648,6 +648,67 @@ function defD(){
   };
 }
 
+// ── MIGRATE CATEGORIES ──
+function migrateCategories(data){
+  if(!data||!data.categories)return data;
+  const plan={
+    'Seguros e Impuestos':{ensure:[
+      {label:'Seguro vida / hogar',fixed:true},
+      {label:'Seguro vehículo',fixed:true},
+      {label:'Impuesto predial',fixed:true,months:[3]},
+      {label:'Impuesto vehículo',fixed:true,months:[4]},
+      {label:'SOAT vehículo',fixed:true,months:[8]}
+    ]},
+    'Alimentación':{ensure:[
+      {label:'Frutas y verduras',fixed:false},
+      {label:'Aseo y víveres',fixed:false},
+      {label:'Lonchera',fixed:false},
+      {label:'Restaurantes',fixed:false}
+    ]},
+    'Transporte':{ensure:[
+      {label:'Gasolina',fixed:false},
+      {label:'Peajes',fixed:false},
+      {label:'Transporte público',fixed:false}
+    ]},
+    'Educación':{ensure:[
+      {label:'Colegio',fixed:true},
+      {label:'Jardín',fixed:true},
+      {label:'Actividades extracurriculares',fixed:false},
+      {label:'Cuotas extras',fixed:false}
+    ]},
+    'Servicio Doméstico':{ensure:[
+      {label:'Salario Empleada',fixed:true},
+      {label:'Intereses Cesantías Empleada',fixed:true,months:[0]},
+      {label:'Cesantías Empleada',fixed:true,months:[1]},
+      {label:'Prima Junio Empleada',fixed:true,months:[5]},
+      {label:'Prima Diciembre Empleada',fixed:true,months:[11]},
+      {label:'Salario Niñera',fixed:true},
+      {label:'Intereses Cesantías Niñera',fixed:true,months:[0]},
+      {label:'Cesantías Niñera',fixed:true,months:[1]},
+      {label:'Prima Junio Niñera',fixed:true,months:[5]},
+      {label:'Prima Diciembre Niñera',fixed:true,months:[11]}
+    ]}
+  };
+  let changed=false;
+  data.categories=data.categories.map(cat=>{
+    const mig=plan[cat.name];
+    if(!mig)return cat;
+    const items=[...cat.items];
+    mig.ensure.forEach(newIt=>{
+      const exists=items.find(it=>it.label===newIt.label);
+      if(!exists){
+        items.push({label:newIt.label,value:0,budget:0,fixed:newIt.fixed,...(newIt.months?{months:newIt.months}:{})});
+        changed=true;
+      }else if(newIt.months&&!exists.months){
+        exists.months=newIt.months;changed=true;
+      }
+    });
+    return{...cat,items};
+  });
+  if(changed) setTimeout(()=>db.ref(dKey(curY,curM)).set(data),1000);
+  return data;
+}
+
 // ── SUBSCRIBE MONTH ──
 function subMonth(){
   if(unsub){db.ref(dKey(curY,curM)).off('value',unsub);unsub=null;}
@@ -655,7 +716,7 @@ function subMonth(){
   unsub=db.ref(dKey(curY,curM)).on('value',snap=>{
     const v=snap.val();
     if(v){
-      D=v;
+      D=migrateCategories(v);
       // Limpiar valores que no aplican en este mes
       if(D.categories) D.categories.forEach(cat=>cat.items.forEach(item=>{
         if(item.months&&!item.months.includes(curM)) item.value=0;
@@ -902,7 +963,6 @@ function renderBudget(){
     const cBud=cat.items.reduce((s,r)=>s+(r.budget||0),0);
     return`<div class="sec">
       <div class="sh"><span class="st">${cat.name}</span><span class="sb">${fmt(cBud)}</span></div>
-      <div class="ch"><span class="f1">Concepto</span><span class="w18"></span><span class="w100 blue">Presup.</span><span class="w100">Real</span><span class="w26"></span></div>
       ${cat.items.map((r,ri)=>{
         const ms=r.months?r.months.map(x=>MSHORT[x]).join('/'):null;
         const inactive=r.months&&!r.months.includes(curM);
@@ -910,7 +970,6 @@ function renderBudget(){
           <span class="rl">${r.label}${ms?`<span class="mbadge">${ms}</span>`:''}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
           <input class="inp bd" type="number" inputmode="numeric" min="0" value="${r.budget||''}" placeholder="0" oninput="updBud(${ci},${ri},this.value)"/>
-          <input class="inp" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" ${inactive?'disabled style="pointer-events:none;"':''} oninput="updExp(${ci},${ri},this.value)"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
         </div>`;
       }).join('')}
