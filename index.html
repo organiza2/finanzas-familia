@@ -946,6 +946,7 @@ function renderAll(){
         return`<div class="row" style="${inactive?'opacity:.35;':''}">
           <span class="rl">${r.label}${r.by?`<span class="chip ${r.by.toLowerCase()}" style="font-size:9px;padding:1px 5px;margin-left:3px;">${r.by[0]}</span>`:''}${ms?`<span class="mbadge">${ms}</span>`:''}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
+          <span style="font-size:11px;color:#9b9b97;font-family:'DM Mono',monospace;min-width:52px;text-align:right;flex-shrink:0;">${r.budget>0?fmt(r.budget):''}</span>
           <input class="inp ${r.fixed?'fx':''} ${r.budget>0&&(r.value||0)>r.budget?'ov':''}" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" ${inactive?'disabled style="pointer-events:none;"':''} oninput="updExp(${ci},${ri},this.value)"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
         </div>`;
@@ -1107,41 +1108,67 @@ function loadEmpFields(){
   window.calcEmp();
 }
 
-// Aplica valores de empleadas a un objeto nd para el mes m
+// Aplica valores de empleadas a presupuesto (budget) de un objeto nd para el mes m
 function applyEmpToMonth(nd,m,emp){
   if(!emp||!nd.categories)return;
   const sd=nd.categories.find(c=>c.name==='Servicio Doméstico');
   if(!sd)return;
-  const set=(label,val)=>{const it=sd.items.find(i=>i.label===label);if(it)it.value=Math.round(val);};
+  // setBudget: escribe en budget (presupuesto), no en value (real)
+  const setBud=(label,val)=>{
+    let it=sd.items.find(i=>i.label===label);
+    if(!it){
+      it={label,value:0,budget:0,fixed:true};
+      sd.items.push(it);
+    }
+    it.budget=Math.round(val);
+  };
+  // setMonths: asegura que el item tenga su restricción de mes
+  const setMonths=(label,months)=>{
+    const it=sd.items.find(i=>i.label===label);
+    if(it&&months) it.months=months;
+  };
 
   const eS=emp.empleada?.salario||0, eIC=emp.empleada?.ic||0, eC=emp.empleada?.ces||0;
   const ePJ=emp.empleada?.primaJ||0, ePD=emp.empleada?.primaD||0;
   const nS=emp.ninera?.salario||0,   nIC=emp.ninera?.ic||0,   nC=emp.ninera?.ces||0;
   const nPJ=emp.ninera?.primaJ||0,   nPD=emp.ninera?.primaD||0;
 
-  // Salario base siempre; prestaciones solo en su mes
-  set('Salario Empleada',eS);
-  set('Intereses Cesantías Empleada', m===0?eIC:0);
-  set('Cesantías Empleada',           m===1?eC:0);
-  set('Prima Junio Empleada',         m===5?ePJ:0);
-  set('Prima Diciembre Empleada',     m===11?ePD:0);
-  set('Salario Niñera',nS);
-  set('Intereses Cesantías Niñera',   m===0?nIC:0);
-  set('Cesantías Niñera',             m===1?nC:0);
-  set('Prima Junio Niñera',           m===5?nPJ:0);
-  set('Prima Diciembre Niñera',       m===11?nPD:0);
+  // Salario base todos los meses
+  setBud('Salario Empleada', eS);
+  setBud('Salario Niñera',   nS);
+
+  // Prestaciones: presupuesto solo en el mes que aplica, 0 en el resto
+  setBud('Intereses Cesantías Empleada', m===0 ? eIC : 0);
+  setBud('Cesantías Empleada',           m===1 ? eC  : 0);
+  setBud('Prima Junio Empleada',         m===5 ? ePJ : 0);
+  setBud('Prima Diciembre Empleada',     m===11? ePD : 0);
+  setBud('Intereses Cesantías Niñera',   m===0 ? nIC : 0);
+  setBud('Cesantías Niñera',             m===1 ? nC  : 0);
+  setBud('Prima Junio Niñera',           m===5 ? nPJ : 0);
+  setBud('Prima Diciembre Niñera',       m===11? nPD : 0);
+
+  // Asegurar restricciones de mes en los items
+  setMonths('Intereses Cesantías Empleada',[0]);
+  setMonths('Cesantías Empleada',[1]);
+  setMonths('Prima Junio Empleada',[5]);
+  setMonths('Prima Diciembre Empleada',[11]);
+  setMonths('Intereses Cesantías Niñera',[0]);
+  setMonths('Cesantías Niñera',[1]);
+  setMonths('Prima Junio Niñera',[5]);
+  setMonths('Prima Diciembre Niñera',[11]);
 }
 
 window.syncEmp=async function(){
   const emp=D.empleadas;
   if(!emp||(!emp.empleada?.salario&&!emp.ninera?.salario)){toast('Primero ingresa los salarios');return;}
-  if(!confirm('¿Transferir salarios y prestaciones al presupuesto de todos los meses de '+curY+'?\nSobrescribirá los valores de Servicio Doméstico en cada mes.'))return;
+  if(!confirm('¿Transferir salarios y prestaciones al PRESUPUESTO de todos los meses de '+curY+'?\nSolo sobrescribirá los campos de Servicio Doméstico.'))return;
   let ok=0;
   for(let m=0;m<12;m++){
     try{
       const snap=await db.ref(dKey(curY,m)).once('value');
       let nd=snap.val();
       if(!nd){
+        // Mes vacío: crear con estructura base
         nd=defD();
         if(D.income) nd.income=D.income.map(r=>({...r,value:r.fixed?r.value:0}));
         if(D.categories) nd.categories=D.categories.map(cat=>({...cat,items:cat.items.map(item=>{
@@ -1149,16 +1176,18 @@ window.syncEmp=async function(){
           return{...item,value:(item.fixed&&applies)?item.value:0};
         })}));
       }
+      // Migrar categorías si es necesario antes de aplicar
+      nd=migrateCategories(nd);
       applyEmpToMonth(nd,m,emp);
       nd.empleadas=emp;
       await db.ref(dKey(curY,m)).set(nd);
       ok++;
     }catch(e){console.error(e);}
   }
-  // Actualizar mes actual en memoria
+  // Actualizar mes actual en memoria también
   applyEmpToMonth(D,curM,emp);
-  save();renderAll();
-  toast('✅ Empleadas transferidas a los 12 meses');
+  save();renderAll();renderBudget();
+  toast('✅ Presupuesto de empleadas actualizado en los 12 meses');
   logH('budget','Empleadas → presupuesto anual',0,'Servicio Doméstico');
 };
 
