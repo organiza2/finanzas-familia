@@ -46,8 +46,8 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 #uChip{cursor:pointer;display:none;}
 
 /* TABS */
-.tabs{background:#fff;border-bottom:1px solid #eeece7;display:flex;max-width:500px;margin:0 auto;overflow-x:auto;}
-.tab{flex:1;min-width:55px;padding:10px 4px;font-size:11px;font-weight:500;color:#9b9b97;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.tabs{background:#fff;border-bottom:1px solid #eeece7;display:flex;max-width:500px;margin:0 auto;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tab{flex:0 0 auto;padding:10px 11px;font-size:11px;font-weight:500;color:#9b9b97;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;font-family:'DM Sans',sans-serif;}
 .tab.on{color:#1D9E75;border-bottom-color:#1D9E75;}
 
 /* CONTENT */
@@ -57,7 +57,6 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 /* MONTH NAV */
 .mnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
 .mb{width:36px;height:36px;border-radius:50%;border:1.5px solid #e8e6e0;background:#fff;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.mb:hover{background:#f0ede8;}
 .mlbl{font-size:17px;font-weight:600;}
 
 /* ALERT */
@@ -90,7 +89,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .sb{font-size:12px;color:#6b8ccc;font-family:'DM Mono',monospace;}
 .sv{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;}
 .fbadge{font-size:10px;background:#E1F5EE;color:#085041;border-radius:99px;padding:2px 6px;margin-left:4px;}
-.mbadge{font-size:9px;color:#9b9b97;margin-left:3px;}
+.mbadge{font-size:9px;background:#FEF3C7;color:#92400E;border-radius:99px;padding:1px 5px;margin-left:3px;font-weight:600;}
 .cdel{font-size:11px;color:#ccc;background:none;border:none;cursor:pointer;padding:2px 5px;border-radius:5px;}
 .cdel:hover{color:#D85A30;background:#FAECE7;}
 
@@ -106,13 +105,16 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .rl{flex:1;font-size:13px;min-width:0;}
 .lock{font-size:13px;cursor:pointer;opacity:.3;transition:opacity .15s;flex-shrink:0;user-select:none;}
 .lock.on{opacity:1;}
+
+/* INPUTS — fixed: no step, no spinners */
 .inp{width:100px;text-align:right;font-size:13px;font-family:'DM Mono',monospace;padding:6px 8px;border:1.5px solid #e8e6e0;border-radius:10px;background:#fafaf8;outline:none;transition:border-color .2s;-moz-appearance:textfield;}
 .inp::-webkit-outer-spin-button,.inp::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .inp:focus{border-color:#1D9E75;}
 .inp.fx{border-color:#9FE1CB;background:#E1F5EE;}
 .inp.bd{border-color:#C5D9FF;background:#EEF4FF;color:#1E3A8A;}
 .inp.ov{border-color:#F0997B;background:#FAECE7;}
-.inp.au{background:#f0ede8;color:#9b9b97;border-color:transparent;}
+.inp.au{background:#f0ede8;color:#9b9b97;border-color:transparent;cursor:default;}
+
 .del{width:26px;height:26px;border-radius:50%;border:none;background:none;cursor:pointer;color:#ddd;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .del:hover{color:#D85A30;background:#FAECE7;}
 .ch{display:flex;align-items:center;gap:5px;padding:0 0 5px;border-bottom:1px solid #f0ede8;margin-bottom:2px;}
@@ -124,7 +126,6 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .aa input[type=text]{flex:1;font-size:13px;padding:7px 11px;border:1.5px dashed #d8d6d0;border-radius:10px;background:transparent;color:#1a1a18;outline:none;}
 .aa input[type=text]:focus{border-color:#1D9E75;border-style:solid;}
 .ab{padding:7px 12px;background:#E1F5EE;border:none;border-radius:10px;font-size:13px;font-weight:600;color:#085041;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.ab:hover{background:#9FE1CB;}
 .ncat{border:1.5px dashed #d8d6d0;border-radius:16px;padding:14px 16px;margin-bottom:12px;}
 
 /* CHART */
@@ -137,21 +138,36 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .bv{font-size:11px;font-family:'DM Mono',monospace;color:#9b9b97;width:65px;text-align:right;flex-shrink:0;}
 .empty{font-size:13px;color:#ccc;text-align:center;padding:10px 0;}
 
-/* NOMINA */
+/* BUTTONS */
+.apply-btn{width:100%;padding:13px;background:#1a1a18;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;}
+.apply-btn:hover{background:#333;}
+.apply-hint{font-size:11px;color:#9b9b97;text-align:center;margin-top:6px;line-height:1.5;}
+.nsb{width:100%;padding:13px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
+.nsb:hover{background:#0F6E56;}
+.ftr{text-align:center;margin-top:1rem;}
+.ftr button{background:none;border:none;font-size:12px;color:#ccc;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;}
+
+/* NOMINA / EMPLEADAS */
 .np{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;}
 .nh{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .nn{font-size:15px;font-weight:600;}
 .nbj{background:#E1F5EE;color:#085041;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;}
 .nba{background:#FCE7EF;color:#7D1F42;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;}
+.nbe{background:#FEF3C7;color:#92400E;border-radius:99px;padding:3px 10px;font-size:12px;font-weight:600;}
 .nnet{display:flex;align-items:center;justify-content:space-between;padding:10px 0 2px;}
 .nnl{font-size:14px;font-weight:600;}
 .nnv{font-size:18px;font-weight:600;font-family:'DM Mono',monospace;color:#0F6E56;}
+.nnv.amber{color:#BA7517;}
 .ntot{background:#1a1a18;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
 .ntl{font-size:13px;color:#9b9b97;}
 .ntv{font-size:22px;font-weight:600;font-family:'DM Mono',monospace;color:#5DCAA5;}
-.nsb{width:100%;padding:13px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:4px;font-family:'DM Sans',sans-serif;}
-.nsb:hover{background:#0F6E56;}
 .ndiv{border:none;border-top:1px dashed #e8e6e0;margin:8px 0;}
+.nom-extra{background:#F5F3EE;border-radius:12px;padding:10px 12px;margin-top:10px;}
+.nom-extra-t{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9b9b97;margin-bottom:6px;}
+.nom-extra .row{border-bottom:1px solid #eae8e2;}
+.nom-extra .row:last-of-type{border-bottom:none;}
+.nom-sub{font-size:11px;color:#9b9b97;margin-top:6px;line-height:1.5;}
+.sec-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9b9b97;margin:10px 0 4px;}
 
 /* ANNUAL */
 .amc{background:#fff;border-radius:14px;padding:14px 16px;margin-bottom:10px;cursor:pointer;}
@@ -178,24 +194,21 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 .dft{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#9b9b97;margin-bottom:14px;}
 .daw{background:#F5F3EE;border-radius:12px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
 .dap{font-size:22px;font-weight:600;color:#9b9b97;font-family:'DM Mono',monospace;}
-.dai{flex:1;font-size:26px;font-weight:600;font-family:'DM Mono',monospace;border:none;background:transparent;color:#1a1a18;outline:none;width:100%;}
+.dai{flex:1;font-size:26px;font-weight:600;font-family:'DM Mono',monospace;border:none;background:transparent;color:#1a1a18;outline:none;width:100%;-moz-appearance:textfield;}
+.dai::-webkit-outer-spin-button,.dai::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
 .dai::placeholder{color:#ccc;}
 .dfields{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
 .dsel{width:100%;font-size:13px;padding:9px 10px;border:1.5px solid #e8e6e0;border-radius:10px;background:#fafaf8;color:#1a1a18;outline:none;font-family:'DM Sans',sans-serif;}
-.dsel:focus{border-color:#1D9E75;}
 .dnote{width:100%;font-size:13px;padding:9px 12px;border:1.5px solid #e8e6e0;border-radius:10px;background:#fafaf8;color:#1a1a18;outline:none;font-family:'DM Sans',sans-serif;}
-.dnote:focus{border-color:#1D9E75;}
 .dwho{display:flex;align-items:center;gap:6px;margin-bottom:12px;padding:9px 12px;background:#F5F3EE;border-radius:10px;}
 .dwho-lbl{font-size:12px;color:#9b9b97;}
 .dsub{width:100%;padding:13px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
-.dsub:hover{background:#0F6E56;}
-.dsub:active{transform:scale(.98);}
 .dlh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
 .dlt{font-size:12px;font-weight:600;color:#9b9b97;text-transform:uppercase;letter-spacing:.05em;}
 .di{background:#fff;border-radius:14px;padding:13px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;}
 .dii{width:36px;height:36px;border-radius:10px;background:#F5F3EE;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
 .dil{flex:1;min-width:0;}
-.din{font-size:13px;font-weight:500;color:#1a1a18;margin-bottom:2px;}
+.din{font-size:13px;font-weight:500;margin-bottom:2px;}
 .dic{font-size:11px;color:#9b9b97;}
 .dim{font-size:11px;color:#ccc;margin-top:1px;}
 .dir{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
@@ -219,15 +232,11 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 
 /* MISC */
 .hint{font-size:11px;color:#9b9b97;margin-bottom:1rem;line-height:1.5;}
-.ftr{text-align:center;margin-top:1.5rem;}
-.ftr button{background:none;border:none;font-size:12px;color:#ccc;cursor:pointer;text-decoration:underline;font-family:'DM Sans',sans-serif;}
-.apply-btn{width:100%;padding:13px;background:#1a1a18;color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:8px;font-family:'DM Sans',sans-serif;}
-.apply-btn:hover{background:#333;}
-.apply-hint{font-size:11px;color:#9b9b97;text-align:center;margin-top:6px;}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;opacity:0;transition:opacity .3s,transform .3s;pointer-events:none;z-index:200;white-space:nowrap;}
 #toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
 #pwab{background:#E1F5EE;border:1.5px solid #9FE1CB;border-radius:14px;padding:12px 16px;margin:1rem 16px 0;max-width:500px;margin-left:auto;margin-right:auto;display:none;}
 #pwab p{font-size:13px;color:#085041;line-height:1.5;}
+.inactive-row{opacity:.4;}
 </style>
 </head>
 <body>
@@ -258,18 +267,26 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 </div>
 
 <div class="tabs">
-  <button class="tab on" onclick="go('m')">Mensual</button>
-  <button class="tab" onclick="go('b')">Presupuesto</button>
-  <button class="tab" onclick="go('n')">Nómina</button>
-  <button class="tab" onclick="go('d')">Hoy 💸</button>
-  <button class="tab" onclick="go('a')">Anual</button>
-  <button class="tab" onclick="go('h')">Historial</button>
+  <button class="tab on"  onclick="go('m')">Mensual</button>
+  <button class="tab"     onclick="go('b')">Presupuesto</button>
+  <button class="tab"     onclick="go('n')">Nómina</button>
+  <button class="tab"     onclick="go('e')">Empleadas</button>
+  <button class="tab"     onclick="go('d')">Hoy 💸</button>
+  <button class="tab"     onclick="go('a')">Anual</button>
+  <button class="tab"     onclick="go('h')">Historial</button>
 </div>
 
-<!-- MENSUAL -->
+<!-- ═══════════════ MENSUAL ═══════════════ -->
 <div id="pm" class="pg on">
-  <div class="mnav"><button class="mb" onclick="chM(-1)">&#8592;</button><span class="mlbl" id="mLbl"></span><button class="mb" onclick="chM(1)">&#8594;</button></div>
-  <div class="alert" id="alertBox"><div class="alert-t">⚠️ Gastos fijos exceden el ingreso</div><div class="alert-b" id="alertMsg"></div></div>
+  <div class="mnav">
+    <button class="mb" onclick="chM(-1)">&#8592;</button>
+    <span class="mlbl" id="mLbl"></span>
+    <button class="mb" onclick="chM(1)">&#8594;</button>
+  </div>
+  <div class="alert" id="alertBox">
+    <div class="alert-t">⚠️ Gastos fijos exceden el ingreso</div>
+    <div class="alert-b" id="alertMsg"></div>
+  </div>
   <div class="cards">
     <div class="card"><div class="cl">Ingresos</div><div class="cv g" id="cInc">$0</div></div>
     <div class="card"><div class="cl">Gasto real</div><div class="cv r" id="cExp">$0</div></div>
@@ -278,7 +295,10 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
     <div class="card cgreen"><div class="cl">Gastos fijos 🔒</div><div class="cv g" id="cFix">$0</div></div>
     <div class="card"><div class="cl">% del presupuesto</div><div class="cv" id="cPct">0%</div></div>
   </div>
-  <div class="pw"><div class="pm"><span>Gasto real vs presupuesto</span><span id="pPct">0%</span></div><div class="pb"><div class="pf" id="pFill" style="width:0%;background:#1D9E75;"></div></div></div>
+  <div class="pw">
+    <div class="pm"><span>Gasto real vs presupuesto</span><span id="pPct">0%</span></div>
+    <div class="pb"><div class="pf" id="pFill" style="width:0%;background:#1D9E75;"></div></div>
+  </div>
   <div class="hint">🔒 Toca el candado para marcar como fijo — se copia automáticamente cada mes.</div>
   <div class="sec">
     <div class="sh"><span class="st">Ingresos</span><span class="sv" id="incTot">$0</span></div>
@@ -286,61 +306,180 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
     <div class="aa"><input type="text" id="niLbl" placeholder="Nueva fuente..."/><button class="ab" onclick="addInc()">+ Agregar</button></div>
   </div>
   <div id="expSecs"></div>
-  <div class="ncat"><div class="st" style="margin-bottom:10px;">Nueva categoría</div><div class="aa"><input type="text" id="ncLbl" placeholder="Nombre categoría..."/><button class="ab" onclick="addCat()">+ Categoría</button></div></div>
+  <div class="ncat">
+    <div class="st" style="margin-bottom:10px;">Nueva categoría</div>
+    <div class="aa"><input type="text" id="ncLbl" placeholder="Nombre categoría..."/><button class="ab" onclick="addCat()">+ Categoría</button></div>
+  </div>
   <div class="csec"><div class="ct">Distribución por categoría</div><div id="barChart"></div></div>
   <button class="apply-btn" onclick="applyFixedYear()">🔒 Aplicar gastos fijos a todo el año</button>
   <div class="apply-hint">Copia los ítems fijos del mes actual a los meses que aún no tienen datos</div>
   <div class="ftr"><button onclick="document.getElementById('userScreen').classList.add('visible')">Cambiar usuario</button></div>
 </div>
 
-<!-- PRESUPUESTO -->
+<!-- ═══════════════ PRESUPUESTO ═══════════════ -->
 <div id="pb" class="pg">
-  <div class="mnav"><button class="mb" onclick="chM(-1)">&#8592;</button><span class="mlbl" id="bLbl"></span><button class="mb" onclick="chM(1)">&#8594;</button></div>
-  <div class="sec" style="background:#EEF4FF;border:1.5px solid #C5D9FF;"><div class="cl" style="color:#1E40AF;margin-bottom:4px;">💡 Define cuánto planeas gastar en cada ítem</div><div style="font-size:13px;color:#1E3A8A;line-height:1.6;">En la pestaña <strong>Mensual</strong> verás el gasto real vs lo presupuestado.</div></div>
+  <div class="mnav">
+    <button class="mb" onclick="chM(-1)">&#8592;</button>
+    <span class="mlbl" id="bLbl"></span>
+    <button class="mb" onclick="chM(1)">&#8594;</button>
+  </div>
+  <div class="sec" style="background:#EEF4FF;border:1.5px solid #C5D9FF;">
+    <div class="cl" style="color:#1E40AF;margin-bottom:4px;">💡 Define cuánto planeas gastar en cada ítem</div>
+    <div style="font-size:13px;color:#1E3A8A;line-height:1.6;">En la pestaña <strong>Mensual</strong> verás el gasto real vs lo presupuestado.</div>
+  </div>
   <div class="cards">
     <div class="card cblue cf"><div class="cl">Total presupuestado</div><div class="cv" id="bTot">$0</div></div>
     <div class="card"><div class="cl">Ingresos</div><div class="cv g" id="bInc">$0</div></div>
     <div class="card"><div class="cl">Diferencia</div><div class="cv" id="bDif">$0</div></div>
   </div>
   <div id="budSecs"></div>
+  <button class="apply-btn" onclick="applyBudgetYear()">📋 Transferir presupuesto a todo el año</button>
+  <div class="apply-hint">Sobrescribe todos los meses con el presupuesto actual, respetando meses especiales de seguros</div>
   <div class="ftr"><button onclick="copyBudPrev()">↩ Copiar presupuesto del mes anterior</button></div>
 </div>
 
-<!-- NOMINA -->
+<!-- ═══════════════ NÓMINA ═══════════════ -->
 <div id="pn" class="pg">
   <div style="font-size:17px;font-weight:600;margin-bottom:.25rem;">Nómina mensual</div>
   <div style="font-size:13px;color:#9b9b97;margin-bottom:1rem;">Calcula el salario neto y transfiérelo al presupuesto.</div>
-  <div class="ntot"><div><div class="ntl">Total neto familiar</div><div class="ntv" id="nomTot">$0</div></div><div style="text-align:right;"><div class="ntl">Mes</div><div style="font-size:13px;color:#fff;font-weight:500;" id="nomMes"></div></div></div>
+  <div class="ntot">
+    <div><div class="ntl">Total neto familiar</div><div class="ntv" id="nomTot">$0</div></div>
+    <div style="text-align:right;"><div class="ntl">Mes</div><div style="font-size:13px;color:#fff;font-weight:500;" id="nomMes"></div></div>
+  </div>
+
+  <!-- Jaime -->
   <div class="np">
     <div class="nh"><span class="nn">Jaime</span><span class="nbj">Empleado</span></div>
-    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" inputmode="numeric" id="jb" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Seguridad social</span><span style="font-size:11px;color:#9b9b97;">8%</span><input class="inp au" type="text" id="jss" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Fondo de solidaridad</span><span style="font-size:11px;color:#9b9b97;">1%</span><input class="inp au" type="text" id="jfs" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" inputmode="numeric" id="jr" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" inputmode="numeric" id="ja" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" inputmode="numeric" id="jm" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Salario bruto</span>
+      <input class="inp" type="number" inputmode="numeric" id="jb" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Seg. social <span style="font-size:10px;color:#9b9b97;">8%</span></span>
+      <input class="inp au" type="text" id="jss" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">F. solidaridad <span style="font-size:10px;color:#9b9b97;">1%</span></span>
+      <input class="inp au" type="text" id="jfs" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Retención fuente <span style="font-size:10px;color:#9b9b97;">auto 7%</span></span>
+      <input class="inp" type="number" inputmode="numeric" id="jr" min="0" placeholder="0" oninput="jrManual=true;calcNom()"/></div>
+    <div class="row"><span class="rl">AFC</span>
+      <input class="inp" type="number" inputmode="numeric" id="ja" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Medicina prepagada</span>
+      <input class="inp" type="number" inputmode="numeric" id="jm" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="ndiv"></div>
     <div class="nnet"><span class="nnl">💚 Neto Jaime</span><span class="nnv" id="jn">$0</span></div>
+    <div style="font-size:12px;color:#6b6b68;margin-top:6px;display:flex;justify-content:space-between;">
+      <span>Prima jun/dic:</span><strong id="jPrima" style="font-family:'DM Mono',monospace;">$0</strong>
+    </div>
+    <div class="nom-extra">
+      <div class="nom-extra-t">Ingresos adicionales Jaime</div>
+      <div class="row"><span class="rl">Bono vacaciones</span>
+        <input class="inp" type="number" inputmode="numeric" id="jBV" min="0" placeholder="0" oninput="calcNom()"/></div>
+      <div class="row"><span class="rl">Bono por resultados</span>
+        <input class="inp" type="number" inputmode="numeric" id="jBR" min="0" placeholder="0" oninput="calcNom()"/></div>
+      <div class="row"><span class="rl">Prima extralegal <span style="font-size:10px;color:#9b9b97;">solo dic</span></span>
+        <input class="inp" type="number" inputmode="numeric" id="jPE" min="0" placeholder="0" oninput="calcNom()"/></div>
+    </div>
   </div>
+
+  <!-- Anny -->
   <div class="np">
     <div class="nh"><span class="nn">Anny</span><span class="nba">Empleada</span></div>
-    <div class="row"><span class="rl">Salario bruto</span><input class="inp" type="number" inputmode="numeric" id="ab2" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Seguridad social</span><span style="font-size:11px;color:#9b9b97;">8%</span><input class="inp au" type="text" id="ass" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Fondo de solidaridad</span><span style="font-size:11px;color:#9b9b97;">1%</span><input class="inp au" type="text" id="afs" readonly placeholder="$0"/></div>
-    <div class="row"><span class="rl">Retención en la fuente</span><input class="inp" type="number" inputmode="numeric" id="ar" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">AFC</span><input class="inp" type="number" inputmode="numeric" id="aa2" min="0" placeholder="0" oninput="calcNom()"/></div>
-    <div class="row"><span class="rl">Medicina prepagada</span><input class="inp" type="number" inputmode="numeric" id="am2" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Salario bruto</span>
+      <input class="inp" type="number" inputmode="numeric" id="ab2" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Seg. social <span style="font-size:10px;color:#9b9b97;">8%</span></span>
+      <input class="inp au" type="text" id="ass" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">F. solidaridad <span style="font-size:10px;color:#9b9b97;">1%</span></span>
+      <input class="inp au" type="text" id="afs" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Retención fuente <span style="font-size:10px;color:#9b9b97;">auto 9%</span></span>
+      <input class="inp" type="number" inputmode="numeric" id="ar" min="0" placeholder="0" oninput="arManual=true;calcNom()"/></div>
+    <div class="row"><span class="rl">AFC</span>
+      <input class="inp" type="number" inputmode="numeric" id="aa2" min="0" placeholder="0" oninput="calcNom()"/></div>
+    <div class="row"><span class="rl">Medicina prepagada</span>
+      <input class="inp" type="number" inputmode="numeric" id="am2" min="0" placeholder="0" oninput="calcNom()"/></div>
     <div class="ndiv"></div>
     <div class="nnet"><span class="nnl">💚 Neto Anny</span><span class="nnv" id="an">$0</span></div>
+    <div style="font-size:12px;color:#6b6b68;margin-top:6px;display:flex;justify-content:space-between;">
+      <span>Prima jun/dic:</span><strong id="aPrima" style="font-family:'DM Mono',monospace;">$0</strong>
+    </div>
+    <div class="nom-extra">
+      <div class="nom-extra-t">Ingresos adicionales Anny</div>
+      <div class="row"><span class="rl">Bono vacaciones</span>
+        <input class="inp" type="number" inputmode="numeric" id="aBV" min="0" placeholder="0" oninput="calcNom()"/></div>
+      <div class="row"><span class="rl">Bono por resultados</span>
+        <input class="inp" type="number" inputmode="numeric" id="aBR" min="0" placeholder="0" oninput="calcNom()"/></div>
+      <div class="row"><span class="rl">Prima extralegal <span style="font-size:10px;color:#9b9b97;">solo dic</span></span>
+        <input class="inp" type="number" inputmode="numeric" id="aPE" min="0" placeholder="0" oninput="calcNom()"/></div>
+    </div>
   </div>
-  <button class="nsb" onclick="syncNom()">↑ Transferir netos al ingreso del mes</button>
-  <div style="font-size:11px;color:#9b9b97;text-align:center;margin-top:8px;">Actualiza los ingresos en la pestaña Mensual</div>
+
+  <button class="nsb" onclick="syncNom()">↑ Transferir ingresos al mes actual</button>
+  <div class="apply-hint" style="margin-top:6px;">
+    Incluye neto + prima (jun/dic) + bonos ingresados. Prima extralegal solo en diciembre.
+  </div>
 </div>
 
-<!-- HOY -->
+<!-- ═══════════════ EMPLEADAS ═══════════════ -->
+<div id="pe" class="pg">
+  <div style="font-size:17px;font-weight:600;margin-bottom:.25rem;">Empleadas del hogar</div>
+  <div style="font-size:13px;color:#9b9b97;margin-bottom:1rem;">Calcula salarios y prestaciones, y transfiérelos al presupuesto anual.</div>
+  <div class="ntot">
+    <div><div class="ntl">Total este mes</div><div class="ntv" id="empTot">$0</div></div>
+    <div style="text-align:right;"><div class="ntl">Mes</div><div style="font-size:13px;color:#fff;font-weight:500;" id="empMes"></div></div>
+  </div>
+
+  <!-- Empleada -->
+  <div class="np">
+    <div class="nh"><span class="nn">Empleada</span><span class="nbe">Hogar</span></div>
+    <div class="row"><span class="rl" style="font-weight:600;">Salario mensual</span>
+      <input class="inp fx" type="number" inputmode="numeric" id="eSal" min="0" placeholder="0" oninput="calcEmp()"/></div>
+    <div class="ndiv"></div>
+    <div class="sec-label">Prestaciones sociales (auto-calculadas)</div>
+    <div class="row"><span class="rl">Intereses cesantías <span class="mbadge">Solo Ene</span></span>
+      <input class="inp au" type="text" id="eIC" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Cesantías <span class="mbadge">Solo Feb</span></span>
+      <input class="inp au" type="text" id="eC" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Prima junio <span class="mbadge">Solo Jun</span></span>
+      <input class="inp au" type="text" id="ePJ" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Prima diciembre <span class="mbadge">Solo Dic</span></span>
+      <input class="inp au" type="text" id="ePD" readonly placeholder="$0"/></div>
+    <div class="ndiv"></div>
+    <div class="nnet"><span class="nnl">💛 Total este mes</span><span class="nnv amber" id="eTotM">$0</span></div>
+  </div>
+
+  <!-- Niñera -->
+  <div class="np">
+    <div class="nh"><span class="nn">Niñera</span><span class="nbe">Hogar</span></div>
+    <div class="row"><span class="rl" style="font-weight:600;">Salario mensual</span>
+      <input class="inp fx" type="number" inputmode="numeric" id="nSal" min="0" placeholder="0" oninput="calcEmp()"/></div>
+    <div class="ndiv"></div>
+    <div class="sec-label">Prestaciones sociales (auto-calculadas)</div>
+    <div class="row"><span class="rl">Intereses cesantías <span class="mbadge">Solo Ene</span></span>
+      <input class="inp au" type="text" id="nIC" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Cesantías <span class="mbadge">Solo Feb</span></span>
+      <input class="inp au" type="text" id="nC" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Prima junio <span class="mbadge">Solo Jun</span></span>
+      <input class="inp au" type="text" id="nPJ" readonly placeholder="$0"/></div>
+    <div class="row"><span class="rl">Prima diciembre <span class="mbadge">Solo Dic</span></span>
+      <input class="inp au" type="text" id="nPD" readonly placeholder="$0"/></div>
+    <div class="ndiv"></div>
+    <div class="nnet"><span class="nnl">💛 Total este mes</span><span class="nnv amber" id="nTotM">$0</span></div>
+  </div>
+
+  <button class="nsb" onclick="syncEmp()">↑ Transferir al presupuesto de todo el año</button>
+  <div class="apply-hint" style="margin-top:6px;">
+    Enero: salario + intereses cesantías · Febrero: salario + cesantías<br/>
+    Junio: salario + prima · Diciembre: salario + prima · Resto: solo salario
+  </div>
+</div>
+
+<!-- ═══════════════ HOY ═══════════════ -->
 <div id="pd" class="pg">
-  <div class="mnav"><button class="mb" onclick="chDay(-1)">&#8592;</button><span class="mlbl" id="dLbl">Hoy</span><button class="mb" onclick="chDay(1)">&#8594;</button></div>
-  <div class="dcard"><div><div class="dcl">Total del día</div><div class="dca" id="dTotal">$0</div><div class="dcc" id="dCount">0 gastos</div></div><div class="dci">🐜</div></div>
+  <div class="mnav">
+    <button class="mb" onclick="chDay(-1)">&#8592;</button>
+    <span class="mlbl" id="dLbl">Hoy</span>
+    <button class="mb" onclick="chDay(1)">&#8594;</button>
+  </div>
+  <div class="dcard">
+    <div><div class="dcl">Total del día</div><div class="dca" id="dTotal">$0</div><div class="dcc" id="dCount">0 gastos</div></div>
+    <div class="dci">🐜</div>
+  </div>
   <div class="dform">
     <div class="dft">Registrar gasto</div>
     <div class="daw"><span class="dap">$</span><input class="dai" type="number" inputmode="numeric" id="dAmt" placeholder="0" min="0"/></div>
@@ -356,16 +495,23 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
   <div class="dsync">🔄 Se suman automáticamente a cada categoría del mes</div>
 </div>
 
-<!-- ANUAL -->
+<!-- ═══════════════ ANUAL ═══════════════ -->
 <div id="pa" class="pg">
-  <div class="mnav"><button class="mb" onclick="chY(-1)">&#8592;</button><span class="mlbl" id="aLbl"></span><button class="mb" onclick="chY(1)">&#8594;</button></div>
+  <div class="mnav">
+    <button class="mb" onclick="chY(-1)">&#8592;</button>
+    <span class="mlbl" id="aLbl"></span>
+    <button class="mb" onclick="chY(1)">&#8594;</button>
+  </div>
   <div id="aTots"></div>
   <div id="aMons"></div>
 </div>
 
-<!-- HISTORIAL -->
+<!-- ═══════════════ HISTORIAL ═══════════════ -->
 <div id="ph" class="pg">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;"><span style="font-size:17px;font-weight:600;">Historial</span><button onclick="clearHist()" style="font-size:12px;color:#ccc;background:none;border:none;cursor:pointer;text-decoration:underline;">Limpiar</button></div>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
+    <span style="font-size:17px;font-weight:600;">Historial</span>
+    <button onclick="clearHist()" style="font-size:12px;color:#ccc;background:none;border:none;cursor:pointer;text-decoration:underline;">Limpiar</button>
+  </div>
   <div class="hf">
     <button class="hfb on" onclick="hFilt('all',this)">Todos</button>
     <button class="hfb" onclick="hFilt('Jaime',this)">Jaime</button>
@@ -383,6 +529,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 const FBU='https://finanzas-ibarra-maso-default-rtdb.firebaseio.com';
 const FBK='Anny1130';
 const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MSHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const COLORS=['#1D9E75','#378ADD','#D85A30','#BA7517','#D4537E','#534AB7','#639922','#6b6b68'];
 const ICONS={'Alimentación':'🍽️','Vivienda':'🏠','Transporte':'🚗','Entretenimiento':'🎬','Salud y Belleza':'💅','Educación':'📚','Ahorro':'💰','Servicio Doméstico':'🏡','Seguros e Impuestos':'🛡️','Café y mecato':'☕','Domicilios':'🛵','Parqueadero':'🅿️','Recarga / apps':'📱','Compras pequeñas':'🛍️','Otros':'💸'};
 
@@ -392,11 +539,13 @@ let dailyDate=new Date();
 let D={},histAll=[],hFilter='all',curTab='m';
 let user=localStorage.getItem('fp_user')||'';
 
-// ── FIREBASE INIT ──
+// Flags retención manual
+let jrManual=false, arManual=false;
+
+// ── FIREBASE ──
 firebase.initializeApp({databaseURL:FBU},'fp');
 db=firebase.database(firebase.app('fp'));
 
-// ── START ──
 document.addEventListener('DOMContentLoaded',()=>{
   if(!user) document.getElementById('userScreen').classList.add('visible');
   else updateChip();
@@ -428,19 +577,74 @@ function dayKey(d){return`daily/${FBK}/${d.getFullYear()}/${String(d.getMonth()+
 // ── DEFAULT DATA ──
 function defD(){
   return{
-    income:[{label:'Salario Jaime',value:0,fixed:true},{label:'Salario Anny',value:0,fixed:true},{label:'Otros ingresos',value:0,fixed:false}],
-    categories:[
-      {name:'Vivienda',items:[{label:'Hipoteca / Arriendo',value:0,budget:0,fixed:true},{label:'Agua y Energía',value:0,budget:0,fixed:true},{label:'Gas',value:0,budget:0,fixed:true},{label:'Internet',value:0,budget:0,fixed:true},{label:'Administración',value:0,budget:0,fixed:true}]},
-      {name:'Seguros e Impuestos',items:[{label:'Seguro de vida / hogar',value:0,budget:0,fixed:true},{label:'Impuesto predial',value:0,budget:0,fixed:true,months:[3]},{label:'SOAT vehículo',value:0,budget:0,fixed:true,months:[8]},{label:'Impuestos vehículo',value:0,budget:0,fixed:true,months:[4]}]},
-      {name:'Servicio Doméstico',items:[{label:'Salario Empleada',value:0,budget:0,fixed:true},{label:'Intereses Cesantías Empleada',value:0,budget:0,fixed:true,months:[1]},{label:'Cesantías Empleada',value:0,budget:0,fixed:true,months:[1]},{label:'Prima Medio Año Empleada',value:0,budget:0,fixed:true,months:[5]},{label:'Prima Fin de Año Empleada',value:0,budget:0,fixed:true,months:[11]},{label:'Salario Niñera',value:0,budget:0,fixed:true},{label:'Intereses Cesantías Niñera',value:0,budget:0,fixed:true,months:[1]},{label:'Cesantías Niñera',value:0,budget:0,fixed:true,months:[1]},{label:'Prima Medio Año Niñera',value:0,budget:0,fixed:true,months:[5]},{label:'Prima Fin de Año Niñera',value:0,budget:0,fixed:true,months:[11]}]},
-      {name:'Alimentación',items:[{label:'Mercado',value:0,budget:0,fixed:false},{label:'Restaurantes',value:0,budget:0,fixed:false}]},
-      {name:'Transporte',items:[{label:'Combustible / peajes',value:0,budget:0,fixed:false},{label:'Transporte público',value:0,budget:0,fixed:false}]},
-      {name:'Salud y Belleza',items:[{label:'Peluquería',value:0,budget:0,fixed:false},{label:'Manicure',value:0,budget:0,fixed:false},{label:'Depilación',value:0,budget:0,fixed:false},{label:'Droguería',value:0,budget:0,fixed:false},{label:'Citas médicas',value:0,budget:0,fixed:false},{label:'Citas pediátricas',value:0,budget:0,fixed:false},{label:'Gimnasio',value:0,budget:0,fixed:true}]},
-      {name:'Educación',items:[{label:'Colegios / universidades',value:0,budget:0,fixed:true},{label:'Cursos y libros',value:0,budget:0,fixed:false}]},
-      {name:'Entretenimiento',items:[{label:'Streaming',value:0,budget:0,fixed:true},{label:'Salidas y ocio',value:0,budget:0,fixed:false}]},
-      {name:'Ahorro',items:[{label:'Ahorro mensual',value:0,budget:0,fixed:true}]}
+    income:[
+      {label:'Salario Jaime',value:0,fixed:true},
+      {label:'Salario Anny',value:0,fixed:true},
+      {label:'Otros ingresos',value:0,fixed:false}
     ],
-    nomina:null
+    categories:[
+      {name:'Vivienda',items:[
+        {label:'Hipoteca / Arriendo',value:0,budget:0,fixed:true},
+        {label:'Agua y Energía',value:0,budget:0,fixed:true},
+        {label:'Gas',value:0,budget:0,fixed:true},
+        {label:'Internet',value:0,budget:0,fixed:true},
+        {label:'Administración',value:0,budget:0,fixed:true}
+      ]},
+      {name:'Seguros e Impuestos',items:[
+        {label:'Seguro vida / hogar',value:0,budget:0,fixed:true},
+        {label:'Seguro vehículo',value:0,budget:0,fixed:true},
+        {label:'Impuesto predial',value:0,budget:0,fixed:true,months:[3]},
+        {label:'Impuesto vehículo',value:0,budget:0,fixed:true,months:[4]},
+        {label:'SOAT vehículo',value:0,budget:0,fixed:true,months:[8]}
+      ]},
+      {name:'Servicio Doméstico',items:[
+        {label:'Salario Empleada',value:0,budget:0,fixed:true},
+        {label:'Intereses Cesantías Empleada',value:0,budget:0,fixed:true,months:[0]},
+        {label:'Cesantías Empleada',value:0,budget:0,fixed:true,months:[1]},
+        {label:'Prima Junio Empleada',value:0,budget:0,fixed:true,months:[5]},
+        {label:'Prima Diciembre Empleada',value:0,budget:0,fixed:true,months:[11]},
+        {label:'Salario Niñera',value:0,budget:0,fixed:true},
+        {label:'Intereses Cesantías Niñera',value:0,budget:0,fixed:true,months:[0]},
+        {label:'Cesantías Niñera',value:0,budget:0,fixed:true,months:[1]},
+        {label:'Prima Junio Niñera',value:0,budget:0,fixed:true,months:[5]},
+        {label:'Prima Diciembre Niñera',value:0,budget:0,fixed:true,months:[11]}
+      ]},
+      {name:'Alimentación',items:[
+        {label:'Frutas y verduras',value:0,budget:0,fixed:false},
+        {label:'Aseo y víveres',value:0,budget:0,fixed:false},
+        {label:'Lonchera',value:0,budget:0,fixed:false},
+        {label:'Restaurantes',value:0,budget:0,fixed:false}
+      ]},
+      {name:'Transporte',items:[
+        {label:'Gasolina',value:0,budget:0,fixed:false},
+        {label:'Peajes',value:0,budget:0,fixed:false},
+        {label:'Transporte público',value:0,budget:0,fixed:false}
+      ]},
+      {name:'Salud y Belleza',items:[
+        {label:'Peluquería',value:0,budget:0,fixed:false},
+        {label:'Manicure',value:0,budget:0,fixed:false},
+        {label:'Depilación',value:0,budget:0,fixed:false},
+        {label:'Droguería',value:0,budget:0,fixed:false},
+        {label:'Citas médicas',value:0,budget:0,fixed:false},
+        {label:'Citas pediátricas',value:0,budget:0,fixed:false},
+        {label:'Gimnasio',value:0,budget:0,fixed:true}
+      ]},
+      {name:'Educación',items:[
+        {label:'Colegio',value:0,budget:0,fixed:true},
+        {label:'Jardín',value:0,budget:0,fixed:true},
+        {label:'Actividades extracurriculares',value:0,budget:0,fixed:false},
+        {label:'Cuotas extras',value:0,budget:0,fixed:false}
+      ]},
+      {name:'Entretenimiento',items:[
+        {label:'Streaming',value:0,budget:0,fixed:true},
+        {label:'Salidas y ocio',value:0,budget:0,fixed:false}
+      ]},
+      {name:'Ahorro',items:[
+        {label:'Ahorro mensual',value:0,budget:0,fixed:true}
+      ]}
+    ],
+    nomina:null,
+    empleadas:null
   };
 }
 
@@ -452,23 +656,20 @@ function subMonth(){
     const v=snap.val();
     if(v){
       D=v;
-      // Limpiar ítems que solo aplican en ciertos meses
-      if(D.categories){
-        D.categories.forEach(cat=>{
-          cat.items.forEach(item=>{
-            if(item.months && !item.months.includes(curM)){
-              item.value=0;
-            }
-          });
-        });
-      }
-    }else{loadFixed();return;}
+      // Limpiar valores que no aplican en este mes
+      if(D.categories) D.categories.forEach(cat=>cat.items.forEach(item=>{
+        if(item.months&&!item.months.includes(curM)) item.value=0;
+      }));
+    }else{
+      loadFixed();return;
+    }
     renderAll();setSS('ok');
   });
 }
 
 async function loadFixed(){
-  let py=curY,pm=curM-1;if(pm<0){pm=11;py--;}
+  let py=curY,pm=curM-1;
+  if(pm<0){pm=11;py--;}
   try{
     const snap=await db.ref(dKey(py,pm)).once('value');
     const prev=snap.val();
@@ -480,6 +681,7 @@ async function loadFixed(){
         return{...r,value:(r.fixed&&ok)?r.value:0};
       })}));
       if(prev.nomina) nd.nomina=prev.nomina;
+      if(prev.empleadas) nd.empleadas=prev.empleadas;
     }
     D=nd;
   }catch(e){D=defD();}
@@ -492,59 +694,104 @@ function renderMLabel(){
 }
 
 // ── TABS ──
-const PAGES={m:'pm',b:'pb',n:'pn',d:'pd',a:'pa',h:'ph'};
+const PAGES={m:'pm',b:'pb',n:'pn',e:'pe',d:'pd',a:'pa',h:'ph'};
+const KEYS=Object.keys(PAGES);
 window.go=function(tab){
   curTab=tab;
-  Object.keys(PAGES).forEach((t,i)=>{
+  KEYS.forEach((t,i)=>{
     document.getElementById(PAGES[t]).classList.toggle('on',t===tab);
     document.querySelectorAll('.tab')[i].classList.toggle('on',t===tab);
   });
   if(tab==='a'){annY=curY;renderAnnual();}
   if(tab==='h') renderHist();
   if(tab==='n'){document.getElementById('nomMes').textContent=MONTHS[curM]+' '+curY;loadNomFields();}
+  if(tab==='e'){document.getElementById('empMes').textContent=MONTHS[curM]+' '+curY;loadEmpFields();}
   if(tab==='d'){dailyDate=new Date();subDaily();updateDWho();}
   if(tab==='b') renderBudget();
 };
 
-// ── MONTH/YEAR NAV ──
+// ── NAVIGATION ──
 window.chM=function(d){curM+=d;if(curM>11){curM=0;curY++;}if(curM<0){curM=11;curY--;}subMonth();};
 window.chY=function(d){annY+=d;renderAnnual();};
 
 // ── FORMAT ──
-function fmt(n){return'$'+Math.round(n).toLocaleString('es-CO');}
+function fmt(n){return'$'+Math.round(n||0).toLocaleString('es-CO');}
+function raw(id){return parseFloat(document.getElementById(id)?.value)||0;}
 
-// ── LOG HISTORY ──
+// ── HISTORY ──
 function logH(type,desc,amt,cat){db.ref(hKey()).push({user:user||'?',type,description:desc,amount:amt||0,category:cat||'',ts:new Date().toISOString()});}
 
-// ── INCOME ACTIONS ──
-window.addInc=function(){const l=document.getElementById('niLbl').value.trim();if(!l)return;D.income.push({label:l,value:0,fixed:false,by:user});document.getElementById('niLbl').value='';renderAll();save();logH('income','Agregó ingreso: '+l,0,'Ingresos');};
+// ── INCOME ──
+window.addInc=function(){const l=document.getElementById('niLbl').value.trim();if(!l)return;D.income.push({label:l,value:0,fixed:false,by:user});document.getElementById('niLbl').value='';renderAll();save();};
 window.delInc=function(i){D.income.splice(i,1);renderAll();save();};
 window.updInc=function(i,v){D.income[i].value=parseFloat(v)||0;D.income[i].by=user;recalc();save();};
 window.togFxInc=function(i){D.income[i].fixed=!D.income[i].fixed;renderAll();save();toast(D.income[i].fixed?'🔒 Fijo':'🔓 Desmarcado');};
 
-// ── EXPENSE ACTIONS ──
+// ── EXPENSES ──
 window.addCat=function(){const l=document.getElementById('ncLbl').value.trim();if(!l)return;D.categories.push({name:l,items:[{label:l,value:0,budget:0,fixed:false}]});document.getElementById('ncLbl').value='';renderAll();save();};
 window.addItem=function(ci){const l=document.getElementById('ni'+ci).value.trim();if(!l)return;D.categories[ci].items.push({label:l,value:0,budget:0,fixed:false,by:user});document.getElementById('ni'+ci).value='';renderAll();save();};
 window.delItem=function(ci,ri){D.categories[ci].items.splice(ri,1);renderAll();save();};
 window.delCat=function(ci){D.categories.splice(ci,1);renderAll();save();};
 window.updExp=function(ci,ri,v){
   const item=D.categories[ci].items[ri];
-  if(item.months && !item.months.includes(curM)){toast('⚠️ Este ítem no aplica en '+MONTHS[curM]);return;}
-  const val=parseFloat(v)||0;item.value=val;item.by=user;recalc();save();if(val>0)logH('expense','Registró: '+item.label,val,D.categories[ci].name);
+  if(item.months&&!item.months.includes(curM)){
+    toast('⚠️ Solo aplica en: '+item.months.map(x=>MSHORT[x]).join(', '));return;
+  }
+  const val=parseFloat(v)||0;item.value=val;item.by=user;recalc();save();
+  if(val>0)logH('expense','Registró: '+item.label,val,D.categories[ci].name);
 };
-window.updBud=function(ci,ri,v){const val=parseFloat(v)||0;D.categories[ci].items[ri].budget=val;recalc();renderBudget();save();if(val>0)logH('budget','Presupuestó: '+D.categories[ci].items[ri].label,val,D.categories[ci].name);};
+window.updBud=function(ci,ri,v){
+  const val=parseFloat(v)||0;D.categories[ci].items[ri].budget=val;recalc();save();
+  if(val>0)logH('budget','Presupuestó: '+D.categories[ci].items[ri].label,val,D.categories[ci].name);
+};
 window.togFx=function(ci,ri){D.categories[ci].items[ri].fixed=!D.categories[ci].items[ri].fixed;renderAll();save();toast(D.categories[ci].items[ri].fixed?'🔒 Gasto fijo':'🔓 Desmarcado');};
 
-// ── COPY BUDGET PREV ──
+// ── COPY BUDGET FROM PREV MONTH ──
 window.copyBudPrev=async function(){
   let py=curY,pm=curM-1;if(pm<0){pm=11;py--;}
-  try{const snap=await db.ref(dKey(py,pm)).once('value');const prev=snap.val();
-  if(!prev){toast('No hay datos del mes anterior');return;}
-  D.categories.forEach((cat,ci)=>{const pc=prev.categories&&prev.categories[ci];if(pc)cat.items.forEach((it,ri)=>{const pi=pc.items&&pc.items[ri];if(pi)it.budget=pi.budget||0;});});
-  renderAll();renderBudget();save();toast('✅ Presupuesto copiado');}catch(e){toast('Error al copiar');}
+  try{
+    const snap=await db.ref(dKey(py,pm)).once('value');const prev=snap.val();
+    if(!prev){toast('No hay datos del mes anterior');return;}
+    D.categories.forEach((cat,ci)=>{
+      const pc=prev.categories&&prev.categories[ci];
+      if(pc)cat.items.forEach((it,ri)=>{const pi=pc.items&&pc.items[ri];if(pi)it.budget=pi.budget||0;});
+    });
+    renderBudget();save();toast('✅ Presupuesto copiado');
+  }catch(e){toast('Error al copiar');}
 };
 
-// ── APPLY FIXED TO YEAR ──
+// ── APPLY BUDGET TO ALL YEAR (overwrite) ──
+window.applyBudgetYear=async function(){
+  if(!confirm('¿Aplicar el presupuesto del mes actual a TODOS los meses de '+curY+'? Se respetarán los meses especiales de seguros.'))return;
+  let applied=0;
+  for(let m=0;m<12;m++){
+    if(m===curM){applied++;continue;}
+    try{
+      const snap=await db.ref(dKey(curY,m)).once('value');
+      const existing=snap.val();
+      const nd=existing?JSON.parse(JSON.stringify(existing)):defD();
+      // Copiar presupuestos, respetando restricciones de mes
+      nd.categories=D.categories.map((cat,ci)=>({
+        ...cat,
+        items:cat.items.map((item,ri)=>{
+          const existItem=nd.categories&&nd.categories[ci]&&nd.categories[ci].items&&nd.categories[ci].items[ri];
+          const inactiveHere=item.months&&!item.months.includes(m);
+          return{
+            ...item,
+            value:existItem?(existItem.value||0):0,
+            budget:inactiveHere?0:(item.budget||0)
+          };
+        })
+      }));
+      if(!existing) nd.income=D.income.map(r=>({...r,value:r.fixed?r.value:0}));
+      await db.ref(dKey(curY,m)).set(nd);
+      applied++;
+    }catch(e){console.error(e);}
+  }
+  toast('✅ Presupuesto aplicado a los 12 meses');
+};
+
+// ── APPLY FIXED ITEMS TO YEAR (empty months only) ──
 window.applyFixedYear=async function(){
   if(!confirm('¿Copiar ítems fijos 🔒 a todos los meses de '+curY+' que aún no tienen datos?'))return;
   let applied=0,skipped=0;
@@ -559,8 +806,7 @@ window.applyFixedYear=async function(){
         const ok=!item.months||item.months.includes(m);
         return{...item,value:(item.fixed&&ok)?item.value:0};
       })}));
-      await db.ref(dKey(curY,m)).set(nd);
-      applied++;
+      await db.ref(dKey(curY,m)).set(nd);applied++;
     }catch(e){console.error(e);}
   }
   toast('✅ Aplicado a '+applied+' meses · '+skipped+' omitidos');
@@ -591,13 +837,11 @@ function recalc(){
   set('pPct',pct+'%');
 
   const ab=document.getElementById('alertBox');
-  if(ab){if(tFix>tInc&&tInc>0){ab.classList.add('on');set('alertMsg','Tus gastos fijos ('+fmt(tFix)+') superan tus ingresos ('+fmt(tInc)+') en '+fmt(tFix-tInc)+'.');}else ab.classList.remove('on');}
+  if(ab){if(tFix>tInc&&tInc>0){ab.classList.add('on');set('alertMsg','Tus gastos fijos ('+fmt(tFix)+') superan los ingresos ('+fmt(tInc)+') en '+fmt(tFix-tInc)+'.');}else ab.classList.remove('on');}
 
-  // Budget tab
   set('bTot',fmt(tBud));set('bInc',fmt(tInc));
   const bd=tInc-tBud;set('bDif',fmt(bd));cls('bDif',bd>=0?'cv g':'cv r');
 
-  // Chart
   const chart=document.getElementById('barChart');if(!chart)return;
   const cats=D.categories.map(c=>({name:c.name,act:c.items.reduce((s,r)=>s+(r.value||0),0),bud:c.items.reduce((s,r)=>s+(r.budget||0),0)})).filter(c=>c.act>0||c.bud>0).sort((a,b)=>b.act-a.act);
   if(!cats.length){chart.innerHTML='<div class="empty">Ingresa gastos para ver la distribución</div>';return;}
@@ -606,7 +850,7 @@ function recalc(){
     const wA=Math.round((c.act/mx)*100);
     const wB=c.bud>0?Math.round((c.bud/mx)*100):0;
     const col=c.bud>0&&c.act>c.bud?'#D85A30':COLORS[i%COLORS.length];
-    return`<div class="br"><div class="bc">${c.name}</div><div class="bt" style="position:relative;"><div class="bf" style="width:${wA}%;background:${col};"></div>${wB>0?`<div style="position:absolute;top:0;bottom:0;left:${wB}%;width:2px;background:rgba(0,0,0,.15);"></div>`:''}</div><div class="bv">${fmt(c.act)}</div></div>`;
+    return`<div class="br"><div class="bc">${c.name}</div><div class="bt"><div class="bf" style="width:${wA}%;background:${col};"></div>${wB>0?`<div style="position:absolute;top:0;bottom:0;left:${wB}%;width:2px;background:rgba(0,0,0,.15);"></div>`:''}</div><div class="bv">${fmt(c.act)}</div></div>`;
   }).join('');
 }
 
@@ -630,21 +874,24 @@ function renderAll(){
     const cpct=cBud>0?Math.round((cAct/cBud)*100):0;
     const bcol=cBud>0&&cAct>cBud?'#D85A30':cpct>85?'#BA7517':'#1D9E75';
     return`<div class="sec">
-      <div class="sh"><span class="st">${cat.name}${fc>0?`<span class="fbadge">${fc}🔒</span>`:''}</span><span class="sr">${cBud>0?`<span class="sb">/${fmt(cBud)}</span>`:''}<span class="sv">${fmt(cAct)}</span><button class="cdel" onclick="delCat(${ci})">✕</button></span></div>
+      <div class="sh">
+        <span class="st">${cat.name}${fc>0?`<span class="fbadge">${fc}🔒</span>`:''}</span>
+        <span class="sr">${cBud>0?`<span class="sb">/${fmt(cBud)}</span>`:''}<span class="sv">${fmt(cAct)}</span><button class="cdel" onclick="delCat(${ci})">✕</button></span>
+      </div>
       ${cBud>0?`<div class="cp"><div class="cpm"><span>${cpct}% del presupuesto</span><span>${fmt(cBud-cAct)} disponible</span></div><div class="cpb"><div class="cpf" style="width:${Math.min(cpct,100)}%;background:${bcol};"></div></div></div>`:''}
       ${cat.items.map((r,ri)=>{
-        const ms=r.months?r.months.map(x=>['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][x]).join('/'):null;
-        return`<div class="row">
+        const ms=r.months?r.months.map(x=>MSHORT[x]).join('/'):null;
+        const inactive=r.months&&!r.months.includes(curM);
+        return`<div class="row" style="${inactive?'opacity:.35;':''}">
           <span class="rl">${r.label}${r.by?`<span class="chip ${r.by.toLowerCase()}" style="font-size:9px;padding:1px 5px;margin-left:3px;">${r.by[0]}</span>`:''}${ms?`<span class="mbadge">${ms}</span>`:''}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
-          <input class="inp ${r.fixed?'fx':''} ${r.budget>0&&(r.value||0)>r.budget?'ov':''}" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)"/>
+          <input class="inp ${r.fixed?'fx':''} ${r.budget>0&&(r.value||0)>r.budget?'ov':''}" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" ${inactive?'disabled style="pointer-events:none;"':''} oninput="updExp(${ci},${ri},this.value)"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
         </div>`;
       }).join('')}
       <div class="aa"><input type="text" id="ni${ci}" placeholder="Nuevo ítem..."/><button class="ab" onclick="addItem(${ci})">+ Ítem</button></div>
     </div>`;
   }).join('');
-
   recalc();
 }
 
@@ -656,72 +903,215 @@ function renderBudget(){
     return`<div class="sec">
       <div class="sh"><span class="st">${cat.name}</span><span class="sb">${fmt(cBud)}</span></div>
       <div class="ch"><span class="f1">Concepto</span><span class="w18"></span><span class="w100 blue">Presup.</span><span class="w100">Real</span><span class="w26"></span></div>
-      ${cat.items.map((r,ri)=>`
-        <div class="row">
-          <span class="rl">${r.label}</span>
+      ${cat.items.map((r,ri)=>{
+        const ms=r.months?r.months.map(x=>MSHORT[x]).join('/'):null;
+        const inactive=r.months&&!r.months.includes(curM);
+        return`<div class="row" style="${inactive?'opacity:.35;':''}">
+          <span class="rl">${r.label}${ms?`<span class="mbadge">${ms}</span>`:''}</span>
           <span class="lock ${r.fixed?'on':''}" onclick="togFx(${ci},${ri})">🔒</span>
           <input class="inp bd" type="number" inputmode="numeric" min="0" value="${r.budget||''}" placeholder="0" oninput="updBud(${ci},${ri},this.value)"/>
-          <input class="inp" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" oninput="updExp(${ci},${ri},this.value)" style="background:#fafaf8;"/>
+          <input class="inp" type="number" inputmode="numeric" min="0" value="${r.value||''}" placeholder="0" ${inactive?'disabled style="pointer-events:none;"':''} oninput="updExp(${ci},${ri},this.value)"/>
           <button class="del" onclick="delItem(${ci},${ri})">&#215;</button>
-        </div>`).join('')}
+        </div>`;
+      }).join('')}
     </div>`;
   }).join('');
   recalc();
 }
 
-// ── NOMINA ──
+// ── NÓMINA ──
 window.calcNom=function(){
-  const jB=parseFloat(document.getElementById('jb').value)||0;
-  const jSS=Math.round(jB*.08),jFS=Math.round(jB*.01);
-  const jR=parseFloat(document.getElementById('jr').value)||0;
-  const jA=parseFloat(document.getElementById('ja').value)||0;
-  const jM=parseFloat(document.getElementById('jm').value)||0;
+  const jB=raw('jb');
+  const jSS=Math.round(jB*.08), jFS=Math.round(jB*.01);
+  const jRauto=Math.round(jB*.07);
+  if(!jrManual) document.getElementById('jr').value=jRauto||'';
+  const jR=raw('jr'), jA=raw('ja'), jM=raw('jm');
   const jN=Math.max(0,jB-jSS-jFS-jR-jA-jM);
-  document.getElementById('jss').value=fmt(jSS);document.getElementById('jfs').value=fmt(jFS);document.getElementById('jn').textContent=fmt(jN);
+  const jPrima=Math.round(jN/2);
+  document.getElementById('jss').value=fmt(jSS);
+  document.getElementById('jfs').value=fmt(jFS);
+  document.getElementById('jn').textContent=fmt(jN);
+  document.getElementById('jPrima').textContent=fmt(jPrima);
 
-  const aB=parseFloat(document.getElementById('ab2').value)||0;
-  const aSS=Math.round(aB*.08),aFS=Math.round(aB*.01);
-  const aR=parseFloat(document.getElementById('ar').value)||0;
-  const aA=parseFloat(document.getElementById('aa2').value)||0;
-  const aM=parseFloat(document.getElementById('am2').value)||0;
+  const aB=raw('ab2');
+  const aSS=Math.round(aB*.08), aFS=Math.round(aB*.01);
+  const aRauto=Math.round(aB*.09);
+  if(!arManual) document.getElementById('ar').value=aRauto||'';
+  const aR=raw('ar'), aA=raw('aa2'), aM=raw('am2');
   const aN=Math.max(0,aB-aSS-aFS-aR-aA-aM);
-  document.getElementById('ass').value=fmt(aSS);document.getElementById('afs').value=fmt(aFS);document.getElementById('an').textContent=fmt(aN);
+  const aPrima=Math.round(aN/2);
+  document.getElementById('ass').value=fmt(aSS);
+  document.getElementById('afs').value=fmt(aFS);
+  document.getElementById('an').textContent=fmt(aN);
+  document.getElementById('aPrima').textContent=fmt(aPrima);
+
   document.getElementById('nomTot').textContent=fmt(jN+aN);
 
-  D.nomina={jaime:{bruto:jB,ret:jR,afc:jA,med:jM,neto:jN},anny:{bruto:aB,ret:aR,afc:aA,med:aM,neto:aN}};
+  D.nomina={
+    jaime:{bruto:jB,ret:raw('jr'),afc:jA,med:jM,neto:jN,prima:jPrima,
+           bonoVac:raw('jBV'),bonoRes:raw('jBR'),primaExtra:raw('jPE')},
+    anny:{bruto:aB,ret:raw('ar'),afc:aA,med:aM,neto:aN,prima:aPrima,
+          bonoVac:raw('aBV'),bonoRes:raw('aBR'),primaExtra:raw('aPE')}
+  };
   save();
 };
 
 function loadNomFields(){
-  const n=D.nomina;if(!n)return;
-  if(n.jaime){document.getElementById('jb').value=n.jaime.bruto||'';document.getElementById('jr').value=n.jaime.ret||'';document.getElementById('ja').value=n.jaime.afc||'';document.getElementById('jm').value=n.jaime.med||'';}
-  if(n.anny){document.getElementById('ab2').value=n.anny.bruto||'';document.getElementById('ar').value=n.anny.ret||'';document.getElementById('aa2').value=n.anny.afc||'';document.getElementById('am2').value=n.anny.med||'';}
+  jrManual=false;arManual=false;
+  const n=D.nomina;if(!n){calcNom();return;}
+  const sf=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  if(n.jaime){
+    sf('jb',n.jaime.bruto);sf('jr',n.jaime.ret);sf('ja',n.jaime.afc);sf('jm',n.jaime.med);
+    sf('jBV',n.jaime.bonoVac);sf('jBR',n.jaime.bonoRes);sf('jPE',n.jaime.primaExtra);
+    if(n.jaime.ret) jrManual=true;
+  }
+  if(n.anny){
+    sf('ab2',n.anny.bruto);sf('ar',n.anny.ret);sf('aa2',n.anny.afc);sf('am2',n.anny.med);
+    sf('aBV',n.anny.bonoVac);sf('aBR',n.anny.bonoRes);sf('aPE',n.anny.primaExtra);
+    if(n.anny.ret) arManual=true;
+  }
   window.calcNom();
 }
 
 window.syncNom=function(){
   const n=D.nomina;if(!n){toast('Primero ingresa los salarios');return;}
-  const si=(name,val)=>{let e=D.income.find(i=>i.label==='Salario '+name);if(e){e.value=val;e.by=user;}else D.income.push({label:'Salario '+name,value:val,fixed:true,by:user});};
-  if(n.jaime)si('Jaime',n.jaime.neto||0);
-  if(n.anny)si('Anny',n.anny.neto||0);
-  save();renderAll();toast('✅ Salarios transferidos');
-  logH('income','Nómina transferida',(n.jaime?.neto||0)+(n.anny?.neto||0),'Nómina');
+  const si=(label,val)=>{
+    let e=D.income.find(i=>i.label===label);
+    if(e){e.value=val;e.by=user;}
+    else D.income.push({label,value:val,fixed:true,by:user});
+  };
+  if(n.jaime){
+    let jTot=n.jaime.neto||0;
+    if(curM===5||curM===11) jTot+=n.jaime.prima||0;
+    if(curM===11) jTot+=n.jaime.primaExtra||0;
+    jTot+=(n.jaime.bonoVac||0)+(n.jaime.bonoRes||0);
+    si('Salario Jaime',jTot);
+  }
+  if(n.anny){
+    let aTot=n.anny.neto||0;
+    if(curM===5||curM===11) aTot+=n.anny.prima||0;
+    if(curM===11) aTot+=n.anny.primaExtra||0;
+    aTot+=(n.anny.bonoVac||0)+(n.anny.bonoRes||0);
+    si('Salario Anny',aTot);
+  }
+  save();renderAll();toast('✅ Ingresos transferidos al mes');
+  logH('income','Nómina transferida',((n.jaime?.neto||0)+(n.anny?.neto||0)),'Nómina');
+};
+
+// ── EMPLEADAS ──
+window.calcEmp=function(){
+  const eSal=raw('eSal');
+  const eIC=Math.round(eSal*0.12);
+  const eC=Math.round(eSal);       // 1 salario completo
+  const ePJ=Math.round(eSal*0.5);
+  const ePD=Math.round(eSal*0.5);
+  document.getElementById('eIC').value=fmt(eIC);
+  document.getElementById('eC').value=fmt(eC);
+  document.getElementById('ePJ').value=fmt(ePJ);
+  document.getElementById('ePD').value=fmt(ePD);
+  let eTot=eSal;
+  if(curM===0) eTot+=eIC;
+  if(curM===1) eTot+=eC;
+  if(curM===5) eTot+=ePJ;
+  if(curM===11) eTot+=ePD;
+  document.getElementById('eTotM').textContent=fmt(eTot);
+
+  const nSal=raw('nSal');
+  const nIC=Math.round(nSal*0.12);
+  const nC=Math.round(nSal);
+  const nPJ=Math.round(nSal*0.5);
+  const nPD=Math.round(nSal*0.5);
+  document.getElementById('nIC').value=fmt(nIC);
+  document.getElementById('nC').value=fmt(nC);
+  document.getElementById('nPJ').value=fmt(nPJ);
+  document.getElementById('nPD').value=fmt(nPD);
+  let nTot=nSal;
+  if(curM===0) nTot+=nIC;
+  if(curM===1) nTot+=nC;
+  if(curM===5) nTot+=nPJ;
+  if(curM===11) nTot+=nPD;
+  document.getElementById('nTotM').textContent=fmt(nTot);
+
+  document.getElementById('empTot').textContent=fmt(eTot+nTot);
+
+  D.empleadas={
+    empleada:{salario:eSal,ic:eIC,ces:eC,primaJ:ePJ,primaD:ePD},
+    ninera:  {salario:nSal,ic:nIC,ces:nC,primaJ:nPJ,primaD:nPD}
+  };
+  save();
+};
+
+function loadEmpFields(){
+  const e=D.empleadas;
+  if(e?.empleada) document.getElementById('eSal').value=e.empleada.salario||'';
+  if(e?.ninera)   document.getElementById('nSal').value=e.ninera.salario||'';
+  window.calcEmp();
+}
+
+// Aplica valores de empleadas a un objeto nd para el mes m
+function applyEmpToMonth(nd,m,emp){
+  if(!emp||!nd.categories)return;
+  const sd=nd.categories.find(c=>c.name==='Servicio Doméstico');
+  if(!sd)return;
+  const set=(label,val)=>{const it=sd.items.find(i=>i.label===label);if(it)it.value=Math.round(val);};
+
+  const eS=emp.empleada?.salario||0, eIC=emp.empleada?.ic||0, eC=emp.empleada?.ces||0;
+  const ePJ=emp.empleada?.primaJ||0, ePD=emp.empleada?.primaD||0;
+  const nS=emp.ninera?.salario||0,   nIC=emp.ninera?.ic||0,   nC=emp.ninera?.ces||0;
+  const nPJ=emp.ninera?.primaJ||0,   nPD=emp.ninera?.primaD||0;
+
+  // Salario base siempre; prestaciones solo en su mes
+  set('Salario Empleada',eS);
+  set('Intereses Cesantías Empleada', m===0?eIC:0);
+  set('Cesantías Empleada',           m===1?eC:0);
+  set('Prima Junio Empleada',         m===5?ePJ:0);
+  set('Prima Diciembre Empleada',     m===11?ePD:0);
+  set('Salario Niñera',nS);
+  set('Intereses Cesantías Niñera',   m===0?nIC:0);
+  set('Cesantías Niñera',             m===1?nC:0);
+  set('Prima Junio Niñera',           m===5?nPJ:0);
+  set('Prima Diciembre Niñera',       m===11?nPD:0);
+}
+
+window.syncEmp=async function(){
+  const emp=D.empleadas;
+  if(!emp||(!emp.empleada?.salario&&!emp.ninera?.salario)){toast('Primero ingresa los salarios');return;}
+  if(!confirm('¿Transferir salarios y prestaciones al presupuesto de todos los meses de '+curY+'?\nSobrescribirá los valores de Servicio Doméstico en cada mes.'))return;
+  let ok=0;
+  for(let m=0;m<12;m++){
+    try{
+      const snap=await db.ref(dKey(curY,m)).once('value');
+      let nd=snap.val();
+      if(!nd){
+        nd=defD();
+        if(D.income) nd.income=D.income.map(r=>({...r,value:r.fixed?r.value:0}));
+        if(D.categories) nd.categories=D.categories.map(cat=>({...cat,items:cat.items.map(item=>{
+          const applies=!item.months||item.months.includes(m);
+          return{...item,value:(item.fixed&&applies)?item.value:0};
+        })}));
+      }
+      applyEmpToMonth(nd,m,emp);
+      nd.empleadas=emp;
+      await db.ref(dKey(curY,m)).set(nd);
+      ok++;
+    }catch(e){console.error(e);}
+  }
+  // Actualizar mes actual en memoria
+  applyEmpToMonth(D,curM,emp);
+  save();renderAll();
+  toast('✅ Empleadas transferidas a los 12 meses');
+  logH('budget','Empleadas → presupuesto anual',0,'Servicio Doméstico');
 };
 
 // ── DAILY ──
-function updateDWho(){
-  const c=document.getElementById('dWhoChip');if(!c)return;
-  c.textContent=user||'Sin sesión';c.className='chip '+(user||'').toLowerCase();
-}
+function updateDWho(){const c=document.getElementById('dWhoChip');if(!c)return;c.textContent=user||'?';c.className='chip '+(user||'').toLowerCase();}
 
 function subDaily(){
   if(dailyUnsub){db.ref(dayKey(dailyDate)).off('value',dailyUnsub);dailyUnsub=null;}
-  updateDayLabel();
-  populateCatSel();
+  updateDayLabel();populateCatSel();
   dailyUnsub=db.ref(dayKey(dailyDate)).on('value',snap=>{
     const items=[];snap.forEach(c=>items.unshift({id:c.key,...c.val()}));
-    renderDailyList(items);
-    syncDailyMonth(items);
+    renderDailyList(items);syncDailyMonth(items);
   });
 }
 
@@ -751,8 +1141,7 @@ window.submitDaily=function(){
   if(!user){document.getElementById('userScreen').classList.add('visible');return;}
   db.ref(dayKey(dailyDate)).push({amount:amt,category:cat,note:note||'',who:user,ts:new Date().toISOString()});
   document.getElementById('dAmt').value='';document.getElementById('dNote').value='';
-  toast('✅ Gasto registrado');
-  logH('expense',(note||cat),amt,cat);
+  toast('✅ Gasto registrado');logH('expense',(note||cat),amt,cat);
 };
 
 window.delDaily=function(id){db.ref(dayKey(dailyDate)+'/'+id).remove();};
@@ -817,7 +1206,9 @@ async function renderAnnual(){
         const bal=inc-exp,pct=bud>0?Math.round((exp/bud)*100):inc>0?Math.round((exp/inc)*100):0;
         const bc=pct>100?'#D85A30':pct>85?'#BA7517':'#1D9E75';
         cards.push(`<div class="amc" onclick="goMon(${m})"><div class="amch"><span class="amcm">${MONTHS[m]}</span><span class="amcb ${bal>=0?'pos':'neg'}">${fmt(bal)}</span></div><div class="amcr"><span>Ingresos: ${fmt(inc)}</span><span>Gastos: ${fmt(exp)}</span></div>${bud>0?`<div class="amcr"><span>Presupuesto: ${fmt(bud)}</span><span>${pct}%</span></div>`:''}<div class="amcbar"><div style="width:${Math.min(pct,100)}%;background:${bc};height:4px;border-radius:99px;"></div></div></div>`);
-      }else{cards.push(`<div class="amc" style="opacity:.4;"><div class="amch"><span class="amcm">${MONTHS[m]}</span><span style="color:#ccc;font-size:12px;">Sin datos</span></div></div>`);}
+      }else{
+        cards.push(`<div class="amc" style="opacity:.4;"><div class="amch"><span class="amcm">${MONTHS[m]}</span><span style="color:#ccc;font-size:12px;">Sin datos</span></div></div>`);
+      }
     }catch(e){cards.push(`<div class="amc" style="opacity:.4;"><div class="amch"><span class="amcm">${MONTHS[m]}</span></div></div>`);}
   }
   const ys=yI-yE;
