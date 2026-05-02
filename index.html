@@ -591,10 +591,10 @@ function defD(){
         {label:'Administración',value:0,budget:0,fixed:true}
       ]},
       {name:'Seguros e Impuestos',items:[
-        {label:'Seguro vida / hogar',value:0,budget:0,fixed:true},
+        {label:'Seguro de vida / hogar',value:0,budget:0,fixed:true},
         {label:'Seguro vehículo',value:0,budget:0,fixed:true},
         {label:'Impuesto predial',value:0,budget:0,fixed:true,months:[3]},
-        {label:'Impuesto vehículo',value:0,budget:0,fixed:true,months:[4]},
+        {label:'Impuestos vehículo',value:0,budget:0,fixed:true,months:[4]},
         {label:'SOAT vehículo',value:0,budget:0,fixed:true,months:[8]}
       ]},
       {name:'Servicio Doméstico',items:[
@@ -652,48 +652,75 @@ function defD(){
 function migrateCategories(data){
   if(!data||!data.categories)return data;
   const plan={
-    'Seguros e Impuestos':{ensure:[
-      {label:'Seguro vida / hogar',fixed:true},
-      {label:'Seguro vehículo',fixed:true},
-      {label:'Impuesto predial',fixed:true,months:[3]},
-      {label:'Impuesto vehículo',fixed:true,months:[4]},
-      {label:'SOAT vehículo',fixed:true,months:[8]}
-    ]},
-    'Alimentación':{ensure:[
-      {label:'Frutas y verduras',fixed:false},
-      {label:'Aseo y víveres',fixed:false},
-      {label:'Lonchera',fixed:false},
-      {label:'Restaurantes',fixed:false}
-    ]},
-    'Transporte':{ensure:[
-      {label:'Gasolina',fixed:false},
-      {label:'Peajes',fixed:false},
-      {label:'Transporte público',fixed:false}
-    ]},
-    'Educación':{ensure:[
-      {label:'Colegio',fixed:true},
-      {label:'Jardín',fixed:true},
-      {label:'Actividades extracurriculares',fixed:false},
-      {label:'Cuotas extras',fixed:false}
-    ]},
-    'Servicio Doméstico':{ensure:[
-      {label:'Salario Empleada',fixed:true},
-      {label:'Intereses Cesantías Empleada',fixed:true,months:[0]},
-      {label:'Cesantías Empleada',fixed:true,months:[1]},
-      {label:'Prima Junio Empleada',fixed:true,months:[5]},
-      {label:'Prima Diciembre Empleada',fixed:true,months:[11]},
-      {label:'Salario Niñera',fixed:true},
-      {label:'Intereses Cesantías Niñera',fixed:true,months:[0]},
-      {label:'Cesantías Niñera',fixed:true,months:[1]},
-      {label:'Prima Junio Niñera',fixed:true,months:[5]},
-      {label:'Prima Diciembre Niñera',fixed:true,months:[11]}
-    ]}
+    'Seguros e Impuestos':{
+      remove:['Seguro vida / hogar','Impuesto vehículo'],
+      ensure:[
+        {label:'Seguro de vida / hogar',fixed:true},
+        {label:'Seguro vehículo',fixed:true},
+        {label:'Impuesto predial',fixed:true,months:[3]},
+        {label:'Impuestos vehículo',fixed:true,months:[4]},
+        {label:'SOAT vehículo',fixed:true,months:[8]}
+      ]
+    },
+    'Alimentación':{
+      remove:[],
+      ensure:[
+        {label:'Frutas y verduras',fixed:false},
+        {label:'Aseo y víveres',fixed:false},
+        {label:'Lonchera',fixed:false},
+        {label:'Restaurantes',fixed:false}
+      ]
+    },
+    'Transporte':{
+      remove:['Combustible / peajes'],
+      ensure:[
+        {label:'Gasolina',fixed:false},
+        {label:'Peajes',fixed:false},
+        {label:'Transporte público',fixed:false}
+      ]
+    },
+    'Educación':{
+      remove:['Colegios / universidades'],
+      ensure:[
+        {label:'Colegio',fixed:true},
+        {label:'Jardín',fixed:true},
+        {label:'Actividades extracurriculares',fixed:false},
+        {label:'Cuotas extras',fixed:false}
+      ]
+    },
+    'Servicio Doméstico':{
+      remove:[],
+      ensure:[
+        {label:'Salario Empleada',fixed:true},
+        {label:'Intereses Cesantías Empleada',fixed:true,months:[0]},
+        {label:'Cesantías Empleada',fixed:true,months:[1]},
+        {label:'Prima Junio Empleada',fixed:true,months:[5]},
+        {label:'Prima Diciembre Empleada',fixed:true,months:[11]},
+        {label:'Salario Niñera',fixed:true},
+        {label:'Intereses Cesantías Niñera',fixed:true,months:[0]},
+        {label:'Cesantías Niñera',fixed:true,months:[1]},
+        {label:'Prima Junio Niñera',fixed:true,months:[5]},
+        {label:'Prima Diciembre Niñera',fixed:true,months:[11]}
+      ]
+    }
   };
+  // Renombres: si el ítem tiene datos, renombrar en vez de eliminar
+  const RENAMES={'Seguro vida / hogar':'Seguro de vida / hogar','Impuesto vehículo':'Impuestos vehículo'};
   let changed=false;
   data.categories=data.categories.map(cat=>{
     const mig=plan[cat.name];
     if(!mig)return cat;
-    const items=[...cat.items];
+    // Eliminar/renombrar ítems viejos
+    let items=cat.items.map(it=>{
+      if(RENAMES[it.label]){it=({...it,label:RENAMES[it.label]});changed=true;}
+      return it;
+    }).filter(it=>{
+      if(!(mig.remove||[]).includes(it.label)) return true;
+      if((it.value||0)>0||(it.budget||0)>0) return true; // conservar si tiene datos
+      changed=true;
+      return false;
+    });
+    // Agregar ítems nuevos que no existen
     mig.ensure.forEach(newIt=>{
       const exists=items.find(it=>it.label===newIt.label);
       if(!exists){
@@ -704,8 +731,7 @@ function migrateCategories(data){
       }
     });
     return{...cat,items};
-  });
-  if(changed) setTimeout(()=>db.ref(dKey(curY,curM)).set(data),1000);
+  });  if(changed) setTimeout(()=>db.ref(dKey(curY,curM)).set(data),1000);
   return data;
 }
 
@@ -1278,17 +1304,35 @@ async function syncDailyMonth(todayItems){
   const y=dailyDate.getFullYear(),m=dailyDate.getMonth();
   if(y!==curY||m!==curM)return;
   try{
+    // Sumar todos los gastos del mes por categoría
     const snap=await db.ref(`daily/${FBK}/${y}/${String(m+1).padStart(2,'0')}`).once('value');
     const catTotals={};
-    snap.forEach(daySnap=>daySnap.forEach(item=>{const v=item.val();if(!catTotals[v.category])catTotals[v.category]=0;catTotals[v.category]+=v.amount||0;}));
+    snap.forEach(daySnap=>daySnap.forEach(item=>{
+      const v=item.val();
+      if(!catTotals[v.category])catTotals[v.category]=0;
+      catTotals[v.category]+=v.amount||0;
+    }));
+
+    // Actualizar ítem hormiga en cada categoría sin tocar los demás
+    let changed=false;
     D.categories.forEach(cat=>{
       const ht=catTotals[cat.name]||0;
       let hi=cat.items.find(i=>i.label==='🐜 Gastos hormiga');
-      if(ht>0){if(hi)hi.value=ht;else cat.items.push({label:'🐜 Gastos hormiga',value:ht,budget:0,fixed:false,auto:true});}
-      else if(hi)hi.value=0;
+      if(ht>0){
+        if(hi){if(hi.value!==ht){hi.value=ht;changed=true;}}
+        else{cat.items.push({label:'🐜 Gastos hormiga',value:ht,budget:0,fixed:false,auto:true});changed=true;}
+      }else if(hi&&hi.value!==0){hi.value=0;changed=true;}
     });
-    save();if(curTab==='m'||curTab==='b')renderAll();
-  }catch(e){}
+
+    // Solo guardar y renderizar si hubo cambios reales
+    if(changed){
+      // Guardar directamente sin pasar por save() para no disparar el listener del mes
+      db.ref(dKey(curY,curM)).set(D);
+      if(curTab==='m') renderAll();
+      else if(curTab==='b') renderBudget();
+      else recalc();
+    }
+  }catch(e){console.error('syncDailyMonth:',e);}
 }
 
 // ── ANNUAL ──
