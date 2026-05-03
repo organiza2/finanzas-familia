@@ -730,18 +730,23 @@ function migrateCategories(data){
       }
     });
     return{...cat,items};
-  });  if(changed) setTimeout(()=>db.ref(dKey(curY,curM)).set(data),1000);
+  });
+  if(changed) db.ref(dKey(curY,curM)).set(data);
   return data;
 }
 
 // ── SUBSCRIBE MONTH ──
+let _migrating=false;
 function subMonth(){
   if(unsub){db.ref(dKey(curY,curM)).off('value',unsub);unsub=null;}
   renderMLabel();
   unsub=db.ref(dKey(curY,curM)).on('value',snap=>{
+    if(_migrating)return; // skip listener while saving migration
     const v=snap.val();
     if(v){
+      _migrating=true;
       D=migrateCategories(v);
+      _migrating=false;
       // Limpiar valores que no aplican en este mes
       if(D.categories) D.categories.forEach(cat=>cat.items.forEach(item=>{
         if(item.months&&!item.months.includes(curM)) item.value=0;
@@ -1312,25 +1317,24 @@ async function syncDailyMonth(todayItems){
       catTotals[v.category]+=v.amount||0;
     }));
 
-    // Actualizar ítem hormiga en cada categoría sin tocar los demás
-    let changed=false;
-    D.categories.forEach(cat=>{
+    // Actualizar hormiga por categoría directamente en Firebase (sin tocar D ni disparar listener)
+    const updates={};
+    D.categories.forEach((cat,ci)=>{
       const ht=catTotals[cat.name]||0;
-      let hi=cat.items.find(i=>i.label==='🐜 Gastos hormiga');
+      const hiIdx=cat.items.findIndex(i=>i.label==='🐜 Gastos hormiga');
       if(ht>0){
-        if(hi){if(hi.value!==ht){hi.value=ht;changed=true;}}
-        else{cat.items.push({label:'🐜 Gastos hormiga',value:ht,budget:0,fixed:false,auto:true});changed=true;}
-      }else if(hi&&hi.value!==0){hi.value=0;changed=true;}
+        if(hiIdx>=0){
+          updates[`${dKey(y,m)}/categories/${ci}/items/${hiIdx}/value`]=ht;
+        }else{
+          // Agregar hormiga al final de los items de esa categoría
+          const newIdx=cat.items.length;
+          updates[`${dKey(y,m)}/categories/${ci}/items/${newIdx}`]={label:'🐜 Gastos hormiga',value:ht,budget:0,fixed:false,auto:true};
+        }
+      }else if(hiIdx>=0){
+        updates[`${dKey(y,m)}/categories/${ci}/items/${hiIdx}/value`]=0;
+      }
     });
-
-    // Solo guardar y renderizar si hubo cambios reales
-    if(changed){
-      // Guardar directamente sin pasar por save() para no disparar el listener del mes
-      db.ref(dKey(curY,curM)).set(D);
-      if(curTab==='m') renderAll();
-      else if(curTab==='b') renderBudget();
-      else recalc();
-    }
+    if(Object.keys(updates).length>0) db.ref('/').update(updates);
   }catch(e){console.error('syncDailyMonth:',e);}
 }
 
