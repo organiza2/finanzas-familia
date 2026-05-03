@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
 <meta name="theme-color" content="#1D9E75"/>
 <link rel="apple-touch-icon" sizes="180x180" href="./icono-181.png">
+<link rel="manifest" href="./manifest.json">
 <title>Finanzas Ibarra-Masso</title>
-</head>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -240,7 +240,6 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 </style>
 </head>
 <body>
-
 <div id="userScreen">
   <div class="u-card">
     <div class="u-logo">👋</div>
@@ -524,8 +523,8 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 </div>
 
 <div id="toast"></div>
-
 <script>
+
 const FBU='https://finanzas-ibarra-maso-default-rtdb.firebaseio.com';
 const FBK='Anny1130';
 const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
@@ -1388,6 +1387,7 @@ function renderHist(){
 
 // ── TOAST ──
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500);}
+
 </script>
 </body>
 </html>
