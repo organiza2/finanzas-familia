@@ -1260,12 +1260,16 @@ function subDaily(){
   updateDayLabel();populateCatSel();
   const path=dayKey(dailyDate);
   dailyRefPath=path;
-  dailyUnsub=db.ref(path).orderByChild('ts').on('value',snap=>{
+  dailyUnsub=db.ref(path).on('value',snap=>{
     if(path!==dailyRefPath)return;
     const items=[];
     snap.forEach(c=>items.push({id:c.key,...c.val()}));
     items.sort((a,b)=>new Date(b.ts||0)-new Date(a.ts||0));
     renderDailyList(items);syncDailyMonth();
+  },e=>{
+    console.error('subDaily:',e);
+    renderDailyList([]);
+    toast('No se pudieron cargar los gastos del día');
   });
 }
 
