@@ -533,7 +533,7 @@ const MSHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov',
 const COLORS=['#1D9E75','#378ADD','#D85A30','#BA7517','#D4537E','#534AB7','#639922','#6b6b68'];
 const ICONS={'Alimentación':'🍽️','Vivienda':'🏠','Transporte':'🚗','Entretenimiento':'🎬','Salud y Belleza':'💅','Educación':'📚','Ahorro':'💰','Servicio Doméstico':'🏡','Seguros e Impuestos':'🛡️','Café y mecato':'☕','Domicilios':'🛵','Parqueadero':'🅿️','Recarga / apps':'📱','Compras pequeñas':'🛍️','Otros':'💸'};
 
-let db,unsub,dailyUnsub,histUnsub,wTimer;
+let db,unsub,dailyUnsub,histUnsub,wTimer,dailyRefPath='';
 let curY=new Date().getFullYear(),curM=new Date().getMonth(),annY=new Date().getFullYear();
 let dailyDate=new Date();
 let D={},histAll=[],hFilter='all',curTab='m';
@@ -1256,11 +1256,16 @@ window.syncEmp=async function(){
 function updateDWho(){const c=document.getElementById('dWhoChip');if(!c)return;c.textContent=user||'?';c.className='chip '+(user||'').toLowerCase();}
 
 function subDaily(){
-  if(dailyUnsub){db.ref(dayKey(dailyDate)).off('value',dailyUnsub);dailyUnsub=null;}
+  if(dailyUnsub&&dailyRefPath){db.ref(dailyRefPath).off('value',dailyUnsub);dailyUnsub=null;}
   updateDayLabel();populateCatSel();
-  dailyUnsub=db.ref(dayKey(dailyDate)).on('value',snap=>{
-    const items=[];snap.forEach(c=>items.unshift({id:c.key,...c.val()}));
-    renderDailyList(items);syncDailyMonth(items);
+  const path=dayKey(dailyDate);
+  dailyRefPath=path;
+  dailyUnsub=db.ref(path).orderByChild('ts').on('value',snap=>{
+    if(path!==dailyRefPath)return;
+    const items=[];
+    snap.forEach(c=>items.push({id:c.key,...c.val()}));
+    items.sort((a,b)=>new Date(b.ts||0)-new Date(a.ts||0));
+    renderDailyList(items);syncDailyMonth();
   });
 }
 
@@ -1282,15 +1287,23 @@ function populateCatSel(){
 
 window.chDay=function(d){dailyDate=new Date(dailyDate);dailyDate.setDate(dailyDate.getDate()+d);subDaily();};
 
-window.submitDaily=function(){
+window.submitDaily=async function(){
   const amt=parseFloat(document.getElementById('dAmt').value)||0;
   const cat=document.getElementById('dCat').value;
   const note=document.getElementById('dNote').value.trim();
   if(!amt){toast('Ingresa un monto');return;}
   if(!user){document.getElementById('userScreen').classList.add('visible');return;}
-  db.ref(dayKey(dailyDate)).push({amount:amt,category:cat,note:note||'',who:user,ts:new Date().toISOString()});
-  document.getElementById('dAmt').value='';document.getElementById('dNote').value='';
+  setSS('wait');
+  try{
+    await db.ref(dayKey(dailyDate)).push({amount:amt,category:cat,note:note||'',who:user,ts:new Date().toISOString()});
+    document.getElementById('dAmt').value='';document.getElementById('dNote').value='';
+    setSS('ok');
   toast('✅ Gasto registrado');logH('expense',(note||cat),amt,cat);
+  }catch(e){
+    console.error('submitDaily:',e);
+    setSS('');
+    toast('No se pudo guardar el gasto');
+  }
 };
 
 window.delDaily=function(id){db.ref(dayKey(dailyDate)+'/'+id).remove();};
@@ -1321,7 +1334,7 @@ function renderDailyList(items){
   }).join('');
 }
 
-async function syncDailyMonth(todayItems){
+async function syncDailyMonth(){
   if(!D.categories)return;
   const y=dailyDate.getFullYear(),m=dailyDate.getMonth();
   if(y!==curY||m!==curM){recalc();return;}
