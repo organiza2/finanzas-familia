@@ -491,6 +491,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
     <button class="dsub" onclick="submitDaily()">+ Registrar gasto</button>
   </div>
   <div class="dlh"><span class="dlt">Gastos del día</span></div>
+  <button onclick="refreshDaily()" style="width:100%;padding:10px;margin-bottom:10px;background:#E1F5EE;color:#085041;border:none;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Recargar gastos</button>
   <div id="dList"></div>
   <div class="dsync">🔄 Se suman automáticamente a cada categoría del mes</div>
 </div>
@@ -1260,18 +1261,36 @@ function subDaily(){
   updateDayLabel();populateCatSel();
   const path=dayKey(dailyDate);
   dailyRefPath=path;
+  loadDailyPath(path);
   dailyUnsub=db.ref(path).on('value',snap=>{
     if(path!==dailyRefPath)return;
-    const items=[];
-    snap.forEach(c=>items.push({id:c.key,...c.val()}));
-    items.sort((a,b)=>new Date(b.ts||0)-new Date(a.ts||0));
-    renderDailyList(items);syncDailyMonth();
+    renderDailyData(path,snap.val());syncDailyMonth();
   },e=>{
     console.error('subDaily:',e);
-    renderDailyList([]);
+    loadDailyPath(path);
     toast('No se pudieron cargar los gastos del día');
   });
 }
+
+function renderDailyData(path,data){
+  if(path!==dailyRefPath)return;
+  const items=Object.keys(data||{}).map(id=>({id,...data[id]}));
+  items.sort((a,b)=>new Date(b.ts||0)-new Date(a.ts||0));
+  renderDailyList(items);
+}
+
+async function loadDailyPath(path){
+  try{
+    const res=await fetch(`${FBU}/${path}.json?v=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    renderDailyData(path,await res.json());
+  }catch(e){
+    console.error('loadDailyPath:',e);
+    if(path===dailyRefPath)renderDailyList([]);
+  }
+}
+
+window.refreshDaily=function(){if(dailyRefPath)loadDailyPath(dailyRefPath);};
 
 function updateDayLabel(){
   const today=new Date();today.setHours(0,0,0,0);
