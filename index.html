@@ -1517,10 +1517,10 @@ window.cleanDuplicates=async function(){
 };
 
 window.fixAllData = async function () {
-  const dbRef = firebase.database().ref('daily');
+  const url = FBU + '/daily.json';
 
-  const snap = await dbRef.once('value');
-  const data = snap.val();
+  const res = await fetch(url);
+  const data = await res.json();
 
   if (!data) {
     alert("No hay datos");
@@ -1533,7 +1533,7 @@ window.fixAllData = async function () {
     return text
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "") // quita tildes
+      .replace(/[\u0300-\u036f]/g, "")
       .replace(/veh[�\?Ã]culo/g, "vehiculo")
       .replace(/Ã¡/g, "a")
       .replace(/Ã©/g, "e")
@@ -1547,25 +1547,19 @@ window.fixAllData = async function () {
   for (let key in data) {
     let item = data[key];
 
-    // soporta ambos formatos
     let categoria = item.categoria || key;
     let valor = item.valor || item;
 
     let catClean = normalize(categoria);
 
-    if (!clean[catClean]) {
-      clean[catClean] = 0;
-    }
+    if (!clean[catClean]) clean[catClean] = 0;
 
     clean[catClean] += Number(valor) || 0;
   }
 
-  // convertir a formato bonito (opcional)
   const finalData = {};
   for (let cat in clean) {
-    let nombre =
-      cat.charAt(0).toUpperCase() + cat.slice(1);
-
+    let nombre = cat.charAt(0).toUpperCase() + cat.slice(1);
     finalData[nombre] = clean[cat];
   }
 
@@ -1574,10 +1568,13 @@ window.fixAllData = async function () {
 
   if (!confirm("Esto reemplazará TODOS los datos. ¿Seguro?")) return;
 
-  await dbRef.set(finalData);
+  await fetch(url, {
+    method: "PUT",
+    body: JSON.stringify(finalData)
+  });
 
   alert("Datos limpiados y unificados correctamente");
-};  
+};
   
 </script>
 </body>
