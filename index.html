@@ -1516,6 +1516,69 @@ window.cleanDuplicates=async function(){
   subMonth();
 };
 
+window.fixAllData = async function () {
+  const dbRef = firebase.database().ref('daily');
+
+  const snap = await dbRef.once('value');
+  const data = snap.val();
+
+  if (!data) {
+    alert("No hay datos");
+    return;
+  }
+
+  const clean = {};
+
+  function normalize(text) {
+    return text
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "") // quita tildes
+      .replace(/veh[�\?Ã]culo/g, "vehiculo")
+      .replace(/Ã¡/g, "a")
+      .replace(/Ã©/g, "e")
+      .replace(/Ã­/g, "i")
+      .replace(/Ã³/g, "o")
+      .replace(/Ãº/g, "u")
+      .replace(/[^a-z0-9 ]/g, "")
+      .trim();
+  }
+
+  for (let key in data) {
+    let item = data[key];
+
+    // soporta ambos formatos
+    let categoria = item.categoria || key;
+    let valor = item.valor || item;
+
+    let catClean = normalize(categoria);
+
+    if (!clean[catClean]) {
+      clean[catClean] = 0;
+    }
+
+    clean[catClean] += Number(valor) || 0;
+  }
+
+  // convertir a formato bonito (opcional)
+  const finalData = {};
+  for (let cat in clean) {
+    let nombre =
+      cat.charAt(0).toUpperCase() + cat.slice(1);
+
+    finalData[nombre] = clean[cat];
+  }
+
+  console.log("ANTES:", data);
+  console.log("DESPUÉS:", finalData);
+
+  if (!confirm("Esto reemplazará TODOS los datos. ¿Seguro?")) return;
+
+  await dbRef.set(finalData);
+
+  alert("Datos limpiados y unificados correctamente");
+};  
+  
 </script>
 </body>
 </html>
