@@ -739,6 +739,51 @@ function migrateCategories(data){
   return data;
 }
 
+// ── CANONICAL LABEL: repara encodings corruptos de tildes/eñes ──
+function canonicalLabel(label){
+  if(!label)return'';
+  const EXACT={
+    'Agua y Energ?a':'Agua y Energía',
+    'Administraci?n':'Administración',
+    'Alimentaci?n':'Alimentación',
+    'Aseo y v?veres':'Aseo y víveres',
+    'Transporte p?blico':'Transporte público',
+    'Transporte p�blico':'Transporte público',
+    'Educaci?n':'Educación',
+    'Jard?n':'Jardín',
+    'Servicio Dom?stico':'Servicio Doméstico',
+    'Intereses Cesant?as Empleada':'Intereses Cesantías Empleada',
+    'Cesant?as Empleada':'Cesantías Empleada',
+    'Prima Medio A?o Empleada':'Prima Junio Empleada',
+    'Prima Fin de A?o Empleada':'Prima Diciembre Empleada',
+    'Salario Ni?era':'Salario Niñera',
+    'Intereses Cesant?as Ni?era':'Intereses Cesantías Niñera',
+    'Cesant?as Ni?era':'Cesantías Niñera',
+    'Prima Medio A?o Ni?era':'Prima Junio Niñera',
+    'Prima Fin de A?o Ni?era':'Prima Diciembre Niñera',
+    'Prima Junio Ni?era':'Prima Junio Niñera',
+    'Prima Diciembre Ni?era':'Prima Diciembre Niñera',
+    'Peluquer?a':'Peluquería',
+    'Depilaci?n':'Depilación',
+    'Droguer?a':'Droguería',
+    'Seguro veh?culo':'Seguro vehículo',
+    'Impuestos veh?culo':'Impuestos vehículo',
+    'SOAT veh?culo':'SOAT vehículo',
+    'Seguro veh�culo':'Seguro vehículo',
+    'Impuestos veh�culo':'Impuestos vehículo',
+    'SOAT veh�culo':'SOAT vehículo',
+    'Seguro vehÃ\u00adculo':'Seguro vehículo',
+    'Medicina prepagadaJaime':'Medicina prepagada',
+    'Impuestos vehiculoMay':'Impuestos vehículo',
+  };
+  let s=label.trim();
+  s=s.replace(/Ã­/g,'í').replace(/Ã©/g,'é').replace(/Ã¡/g,'á')
+     .replace(/Ã³/g,'ó').replace(/Ãº/g,'ú').replace(/Ã±/g,'ñ');
+  if(EXACT[s])s=EXACT[s];
+  if(ITEM_RENAMES[s])s=ITEM_RENAMES[s];
+  return s;
+}
+
 // ── SUBSCRIBE MONTH ──
 let _migrating=false;
 function subMonth(){
@@ -749,6 +794,8 @@ function subMonth(){
     const v=snap.val();
     if(v){
       _migrating=true;
+      // Reparar labels corruptos antes de cualquier procesamiento
+      if(v.categories) v.categories=v.categories.map(cat=>({...cat,items:(cat.items||[]).map(it=>({...it,label:canonicalLabel(it.label||'')}))}));
       D=stripAutoItems(migrateCategories(v));
       _migrating=false;
       // Limpiar valores que no aplican en este mes
@@ -778,7 +825,7 @@ async function loadFixed(){
       if(prev.income) nd.income=prev.income.map(r=>({...r,value:r.fixed?r.value:0}));
       if(prev.categories) nd.categories=prev.categories.map(c=>({...c,items:planItems(c).map(r=>{
         const ok=!r.months||r.months.includes(curM);
-        return{...r,value:(r.fixed&&ok)?r.value:0};
+        return{...r,label:canonicalLabel(r.label||''),value:(r.fixed&&ok)?r.value:0};
       })}));
       if(prev.nomina) nd.nomina=prev.nomina;
       if(prev.empleadas) nd.empleadas=prev.empleadas;
@@ -1005,6 +1052,8 @@ function recalc(){
 // ── RENDER ALL ──
 function renderAll(){
   if(!D.income)return;
+  // Normalizar categorías para eliminar duplicados en memoria antes de pintar
+  if(D.categories) D.categories=D.categories.map(cat=>({...cat,items:normalizeCategoryItems(cat)}));
   renderMLabel();
 
   document.getElementById('incRows').innerHTML=D.income.map((r,i)=>`
@@ -1029,7 +1078,7 @@ function renderAll(){
         <span class="sr">${cBud>0?`<span class="sb">/${fmt(cBud)}</span>`:''}<span class="sv">${fmt(cAct)}</span><button class="cdel" onclick="delCat(${ci})">✕</button></span>
       </div>
       ${cBud>0?`<div class="cp"><div class="cpm"><span>${cpct}% del presupuesto</span><span>${fmt(cBud-cAct)} disponible</span></div><div class="cpb"><div class="cpf" style="width:${Math.min(cpct,100)}%;background:${bcol};"></div></div></div>`:''}
-      ${cat.items.filter(r=>!r.auto).map((r,ri)=>{
+      ${planItems(cat).map((r,ri)=>{
         const ms=r.months?r.months.map(x=>MSHORT[x]).join('/'):null;
         const inactive=r.months&&!r.months.includes(curM);
         return`<div class="row" style="${inactive?'opacity:.35;':''}">
@@ -1060,8 +1109,7 @@ function renderBudget(){
     const cBud=planItems(cat).reduce((s,r)=>s+(r.budget||0),0);
     return`<div class="sec">
       <div class="sh"><span class="st">${cat.name}</span><span class="sb">${fmt(cBud)}</span></div>
-      ${cat.items.map((r,ri)=>{
-        if(isAutoItem(r))return'';
+      ${planItems(cat).map((r,ri)=>{
         const ms=r.months?r.months.map(x=>MSHORT[x]).join('/'):null;
         const inactive=r.months&&!r.months.includes(curM);
         return`<div class="row" style="${inactive?'opacity:.35;':''}">
@@ -1474,9 +1522,8 @@ function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t
 
 // ── LIMPIAR DUPLICADOS EN FIREBASE ──
 window.cleanDuplicates=async function(){
-  const RENAMES=ITEM_RENAMES;
   const REMOVE=['Combustible / peajes','Colegios / universidades'];
-  let fixed=0;
+  let fixed=0,totalRemoved=0;
   for(let m=0;m<12;m++){
     try{
       const snap=await db.ref(dKey(curY,m)).once('value');
@@ -1484,26 +1531,32 @@ window.cleanDuplicates=async function(){
       if(!nd||!nd.categories)continue;
       let changed=false;
       nd.categories=nd.categories.map(cat=>{
-        // Renombrar
-        cat.items=cat.items.map(it=>{
-          if(RENAMES[it.label]){it={...it,label:RENAMES[it.label]};changed=true;}
+        // 1. Corregir label de cada ítem al canónico
+        cat.items=(cat.items||[]).map(it=>{
+          const fixed=canonicalLabel(it.label);
+          if(fixed!==it.label){changed=true;return{...it,label:fixed};}
           return it;
         });
-        // Eliminar duplicados sin valor
+        // 2. Eliminar ítems en lista REMOVE si no tienen valor
         cat.items=cat.items.filter(it=>{
           if(!REMOVE.includes(it.label))return true;
           if((it.value||0)>0||(it.budget||0)>0)return true;
-          changed=true;
-          return false;
+          changed=true;return false;
         });
-        // Deduplicar: si hay dos ítems con mismo label, conservar el que tiene valor
-        const seen={};
-        cat.items=cat.items.filter(it=>{
-          if(!seen[it.label]){seen[it.label]=true;return true;}
-          changed=true;
-          return false;
+        // 3. Deduplicar por label canónico: fusionar valores, conservar el mayor budget
+        const byLabel={};
+        cat.items.forEach(it=>{
+          const key=it.label;
+          if(!byLabel[key]){byLabel[key]={...it};}
+          else{
+            // fusionar: sumar valores no, tomar el mayor (evita inflar)
+            if((it.value||0)>(byLabel[key].value||0))byLabel[key].value=it.value;
+            if((it.budget||0)>(byLabel[key].budget||0))byLabel[key].budget=it.budget;
+            byLabel[key].fixed=!!(byLabel[key].fixed||it.fixed);
+            changed=true;totalRemoved++;
+          }
         });
-        cat.items=normalizeCategoryItems(cat);
+        cat.items=Object.values(byLabel);
         return cat;
       });
       if(changed){
@@ -1512,7 +1565,7 @@ window.cleanDuplicates=async function(){
       }
     }catch(e){console.error('cleanDuplicates month',m,e);}
   }
-  toast('✅ Limpieza completada en '+fixed+' meses');
+  toast('✅ Limpieza en '+fixed+' meses · '+totalRemoved+' duplicados eliminados');
   subMonth();
 };
 
