@@ -775,6 +775,13 @@ function canonicalLabel(label){
     'Seguro vehÃ\u00adculo':'Seguro vehículo',
     'Medicina prepagadaJaime':'Medicina prepagada',
     'Impuestos vehiculoMay':'Impuestos vehículo',
+    // Nombres de categoría
+    'Alimentaci�n':'Alimentación',
+    'Alimentaci?n':'Alimentación',
+    'Educaci�n':'Educación',
+    'Educaci?n':'Educación',
+    'Servicio Dom�stico':'Servicio Doméstico',
+    'Servicio Dom?stico':'Servicio Doméstico',
   };
   let s=label.trim();
   s=s.replace(/Ã­/g,'í').replace(/Ã©/g,'é').replace(/Ã¡/g,'á')
@@ -794,8 +801,8 @@ function subMonth(){
     const v=snap.val();
     if(v){
       _migrating=true;
-      // Reparar labels corruptos antes de cualquier procesamiento
-      if(v.categories) v.categories=v.categories.map(cat=>({...cat,items:(cat.items||[]).map(it=>({...it,label:canonicalLabel(it.label||'')}))}));
+      // Reparar labels y nombres de categoría corruptos antes de cualquier procesamiento
+      if(v.categories) v.categories=v.categories.map(cat=>({...cat,name:canonicalLabel(cat.name||''),items:(cat.items||[]).map(it=>({...it,label:canonicalLabel(it.label||'')}))}));
       D=stripAutoItems(migrateCategories(v));
       _migrating=false;
       // Limpiar valores que no aplican en este mes
@@ -1531,6 +1538,9 @@ window.cleanDuplicates=async function(){
       if(!nd||!nd.categories)continue;
       let changed=false;
       nd.categories=nd.categories.map(cat=>{
+        // 0. Corregir nombre de categoría
+        const fixedName=canonicalLabel(cat.name||'');
+        if(fixedName!==cat.name){cat={...cat,name:fixedName};changed=true;}
         // 1. Corregir label de cada ítem al canónico
         cat.items=(cat.items||[]).map(it=>{
           const fixed=canonicalLabel(it.label);
