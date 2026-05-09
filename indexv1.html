@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Finanzas Organiza2">
+<meta name="apple-mobile-web-app-title" content="Finanzas Ibarra-Masso">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#1D9E75">
 <link rel="apple-touch-icon" sizes="180x180" href="./icono-181.png">
 <link rel="manifest" href="./manifest.json">
-<title>💰 Finanzas — Organiza2</title>
+<title>Finanzas Ibarra-Masso</title>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
@@ -256,7 +256,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 
 <div class="topbar">
   <div class="topbar-inner">
-    <span class="app-title">💰 Finanzas — Organiza2</span>
+    <span class="app-title">💰 Finanzas Ibarra-Masso</span>
     <div class="sync-wrap">
       <span class="chip" id="uChip" onclick="document.getElementById('userScreen').classList.add('visible')"></span>
       <span class="sdot" id="sdot"></span>
@@ -527,7 +527,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 <div id="toast"></div>
 <script>
 
-const FBU='https://organiza2-a09ef-default-rtdb.firebaseio.com';
+const FBU='https://finanzas-ibarra-maso-default-rtdb.firebaseio.com';
 const FBK='Anny1130';
 const MONTHS=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const MSHORT=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -545,15 +545,7 @@ let dailyTotals={}; // totales de gastos diarios por categoría (solo en memoria
 let jrManual=false, arManual=false;
 
 // ── FIREBASE ──
-firebase.initializeApp({
-  apiKey: "AIzaSyCHWDJfmr2ok_xw-w1FE1tvNV5j5j5VEzc",
-  authDomain: "organiza2-a09ef.firebaseapp.com",
-  databaseURL: "https://organiza2-a09ef-default-rtdb.firebaseio.com",
-  projectId: "organiza2-a09ef",
-  storageBucket: "organiza2-a09ef.firebasestorage.app",
-  messagingSenderId: "188270762396",
-  appId: "1:188270762396:web:be236988bf4f91f2141059"
-},'fp');
+firebase.initializeApp({databaseURL:FBU},'fp');
 db=firebase.database(firebase.app('fp'));
 
 document.addEventListener('DOMContentLoaded',()=>{
@@ -751,12 +743,12 @@ function migrateCategories(data){
 function canonicalLabel(label){
   if(!label)return'';
   const EXACT={
-    // Items — versión ? (ASCII 003f)
     'Agua y Energ?a':'Agua y Energía',
     'Administraci?n':'Administración',
     'Alimentaci?n':'Alimentación',
     'Aseo y v?veres':'Aseo y víveres',
     'Transporte p?blico':'Transporte público',
+    'Transporte p�blico':'Transporte público',
     'Educaci?n':'Educación',
     'Jard?n':'Jardín',
     'Servicio Dom?stico':'Servicio Doméstico',
@@ -774,54 +766,22 @@ function canonicalLabel(label){
     'Peluquer?a':'Peluquería',
     'Depilaci?n':'Depilación',
     'Droguer?a':'Droguería',
-    'Citas m?dicas':'Citas médicas',
-    'Citas pedi?tricas':'Citas pediátricas',
     'Seguro veh?culo':'Seguro vehículo',
     'Impuestos veh?culo':'Impuestos vehículo',
     'SOAT veh?culo':'SOAT vehículo',
-    // Items — versión � (rombo)
-    'Agua y Energ�a':'Agua y Energía',
-    'Administraci�n':'Administración',
-    'Alimentaci�n':'Alimentación',
-    'Aseo y v�veres':'Aseo y víveres',
-    'Transporte p�blico':'Transporte público',
-    'Educaci�n':'Educación',
-    'Jard�n':'Jardín',
-    'Servicio Dom�stico':'Servicio Doméstico',
-    'Intereses Cesant�as Empleada':'Intereses Cesantías Empleada',
-    'Cesant�as Empleada':'Cesantías Empleada',
-    'Prima Medio A�o Empleada':'Prima Junio Empleada',
-    'Prima Fin de A�o Empleada':'Prima Diciembre Empleada',
-    'Salario Ni�era':'Salario Niñera',
-    'Intereses Cesant�as Ni�era':'Intereses Cesantías Niñera',
-    'Cesant�as Ni�era':'Cesantías Niñera',
-    'Prima Medio A�o Ni�era':'Prima Junio Niñera',
-    'Prima Fin de A�o Ni�era':'Prima Diciembre Niñera',
-    'Prima Junio Ni�era':'Prima Junio Niñera',
-    'Prima Diciembre Ni�era':'Prima Diciembre Niñera',
-    'Peluquer�a':'Peluquería',
-    'Depilaci�n':'Depilación',
-    'Droguer�a':'Droguería',
-    'Citas m�dicas':'Citas médicas',
-    'Citas pedi�tricas':'Citas pediátricas',
     'Seguro veh�culo':'Seguro vehículo',
     'Impuestos veh�culo':'Impuestos vehículo',
     'SOAT veh�culo':'SOAT vehículo',
-    // Items — versión mojibake Ã
-    'Seguro vehÃ­culo':'Seguro vehículo',
-    'Impuestos vehÃ­culo':'Impuestos vehículo',
-    'SOAT vehÃ­culo':'SOAT vehículo',
-    // Otros
+    'Seguro vehÃ\u00adculo':'Seguro vehículo',
     'Medicina prepagadaJaime':'Medicina prepagada',
     'Impuestos vehiculoMay':'Impuestos vehículo',
-    // Nombres de categoría — versión ?
-    'Alimentaci?n':'Alimentación',
-    'Educaci?n':'Educación',
-    'Servicio Dom?stico':'Servicio Doméstico',
-    // Nombres de categoría — versión �
+    // Nombres de categoría
     'Alimentaci�n':'Alimentación',
+    'Alimentaci?n':'Alimentación',
     'Educaci�n':'Educación',
+    'Educaci?n':'Educación',
     'Servicio Dom�stico':'Servicio Doméstico',
+    'Servicio Dom?stico':'Servicio Doméstico',
   };
   let s=label.trim();
   s=s.replace(/Ã­/g,'í').replace(/Ã©/g,'é').replace(/Ã¡/g,'á')
