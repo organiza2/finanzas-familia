@@ -1,1 +1,1 @@
-Esta app esta diseñada para llevar el presupuesto y el gasto real y hormiga de una pareja trabajadora y con dos hijas
+Estoy construyendo Organiza2, un ecosistema de módulos web para familias latinoamericanas. Stack: HTML/CSS/JS vanilla, Firebase Realtime Database, GitHub Pages. Módulos: Finanzas (en producción), Eventos, Agenda Escolar, Lonchera. Usuario: ingeniero de sistemas, experiencia desde 2004, retomando programación con IA. Preferencia: respuestas directas, código listo para usar, sin frameworks.
