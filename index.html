@@ -237,6 +237,35 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
 #pwab{background:#E1F5EE;border:1.5px solid #9FE1CB;border-radius:14px;padding:12px 16px;margin:1rem 16px 0;max-width:500px;margin-left:auto;margin-right:auto;display:none;}
 #pwab p{font-size:13px;color:#085041;line-height:1.5;}
 .inactive-row{opacity:.4;}
+
+/* ANÁLISIS */
+.an-tab{padding:8px 14px;border-radius:99px;border:1.5px solid #e8e6e0;background:#fff;font-size:12px;font-weight:500;color:#9b9b97;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.an-tab.on{background:#1a1a18;color:#fff;border-color:#1a1a18;}
+.sem-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f5f3ee;}
+.sem-row:last-child{border-bottom:none;}
+.sem-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-right:10px;}
+.sem-name{font-size:13px;font-weight:500;}
+.sem-pct{font-size:11px;color:#9b9b97;margin-top:2px;}
+.sem-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;}
+.sem-bud{font-size:11px;color:#9b9b97;}
+.trend-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.trend-lbl{font-size:12px;color:#9b9b97;width:32px;flex-shrink:0;}
+.trend-track{flex:1;height:10px;background:#f5f3ee;border-radius:99px;overflow:hidden;}
+.trend-fill{height:100%;border-radius:99px;transition:width .4s;}
+.trend-val{font-size:12px;font-family:'DM Mono',monospace;color:#9b9b97;width:72px;text-align:right;flex-shrink:0;}
+.comp-row{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.comp-lbl{font-size:12px;color:#9b9b97;width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.comp-track{flex:1;height:8px;background:#f5f3ee;border-radius:99px;overflow:hidden;}
+.comp-fill{height:100%;border-radius:99px;}
+.comp-badge{font-size:10px;font-weight:600;border-radius:99px;padding:2px 7px;flex-shrink:0;}
+.badge-g{background:#E1F5EE;color:#085041;}
+.badge-r{background:#FAECE7;color:#993C1D;}
+.badge-a{background:#FEF3C7;color:#92400E;}
+.hor-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f5f3ee;}
+.hor-row:last-child{border-bottom:none;}
+.hor-icon{font-size:18px;width:28px;text-align:center;flex-shrink:0;}
+.hor-name{font-size:13px;flex:1;margin-left:8px;}
+.hor-val{font-size:13px;font-weight:600;font-family:'DM Mono',monospace;color:#D85A30;}
 </style>
 </head>
 <body>
@@ -271,8 +300,7 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
   <button class="tab"     onclick="go('n')">Nómina</button>
   <button class="tab"     onclick="go('e')">Empleadas</button>
   <button class="tab"     onclick="go('d')">Hoy 💸</button>
-  <button class="tab"     onclick="go('a')">Anual</button>
-  <button class="tab"     onclick="go('h')">Historial</button>
+  <button class="tab"     onclick="go('x')">Análisis 📊</button>
 </div>
 
 <!-- ═══════════════ MENSUAL ═══════════════ -->
@@ -496,32 +524,56 @@ body{font-family:'DM Sans',sans-serif;background:#F5F3EE;color:#1a1a18;min-heigh
   <div class="dsync">🔄 Se suman automáticamente a cada categoría del mes</div>
 </div>
 
-<!-- ═══════════════ ANUAL ═══════════════ -->
-<div id="pa" class="pg">
+<!-- ═══════════════ ANÁLISIS ═══════════════ -->
+<div id="px" class="pg">
   <div class="mnav">
-    <button class="mb" onclick="chY(-1)">&#8592;</button>
-    <span class="mlbl" id="aLbl"></span>
-    <button class="mb" onclick="chY(1)">&#8594;</button>
+    <button class="mb" onclick="chM(-1)">&#8592;</button>
+    <span class="mlbl" id="xLbl"></span>
+    <button class="mb" onclick="chM(1)">&#8594;</button>
   </div>
-  <div id="aTots"></div>
-  <div id="aMons"></div>
-</div>
+  <!-- Sub-pestañas -->
+  <div style="display:flex;gap:8px;margin-bottom:1rem;">
+    <button class="an-tab on" id="at-sem" onclick="showAnTab('sem')">🚦 Semáforo</button>
+    <button class="an-tab" id="at-ten" onclick="showAnTab('ten')">📈 Tendencia</button>
+    <button class="an-tab" id="at-hor" onclick="showAnTab('hor')">🐜 Hormiga</button>
+  </div>
 
-<!-- ═══════════════ HISTORIAL ═══════════════ -->
-<div id="ph" class="pg">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;">
-    <span style="font-size:17px;font-weight:600;">Historial</span>
-    <button onclick="clearHist()" style="font-size:12px;color:#ccc;background:none;border:none;cursor:pointer;text-decoration:underline;">Limpiar</button>
+  <!-- SEMÁFORO -->
+  <div id="an-sem" class="an-sec">
+    <div class="cards" id="xCards"></div>
+    <div class="sec">
+      <div class="sh"><span class="st">Semáforo por categoría</span></div>
+      <div id="xSemaforo"></div>
+    </div>
   </div>
-  <div class="hf">
-    <button class="hfb on" onclick="hFilt('all',this)">Todos</button>
-    <button class="hfb" onclick="hFilt('Jaime',this)">Jaime</button>
-    <button class="hfb" onclick="hFilt('Anny',this)">Anny</button>
-    <button class="hfb" onclick="hFilt('income',this)">Ingresos</button>
-    <button class="hfb" onclick="hFilt('expense',this)">Gastos</button>
-    <button class="hfb" onclick="hFilt('budget',this)">Presupuesto</button>
+
+  <!-- TENDENCIA -->
+  <div id="an-ten" class="an-sec" style="display:none;">
+    <div class="sec">
+      <div class="sh"><span class="st">Gasto total — últimos 6 meses</span></div>
+      <div id="xTendencia"></div>
+    </div>
+    <div class="sec">
+      <div class="sh"><span class="st">Comparación vs mes anterior</span></div>
+      <div id="xComparacion"></div>
+    </div>
   </div>
-  <div id="hList"></div>
+
+  <!-- HORMIGA -->
+  <div id="an-hor" class="an-sec" style="display:none;">
+    <div class="cards">
+      <div class="card"><div class="cl">Total hormiga</div><div class="cv r" id="xHorTotal">$0</div></div>
+      <div class="card"><div class="cl">Gastos registrados</div><div class="cv" id="xHorCount">0</div></div>
+    </div>
+    <div class="sec">
+      <div class="sh"><span class="st">Top categorías hormiga</span></div>
+      <div id="xHorCats"></div>
+    </div>
+    <div class="sec">
+      <div class="sh"><span class="st">Hormiga por día de la semana</span></div>
+      <div id="xHorDias"></div>
+    </div>
+  </div>
 </div>
 
 <div id="toast"></div>
@@ -889,11 +941,11 @@ async function loadFixed(){
 
 function renderMLabel(){
   const lbl=MONTHS[curM]+' '+curY;
-  ['mLbl','bLbl'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=lbl;});
+  ['mLbl','bLbl','xLbl'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=lbl;});
 }
 
 // ── TABS ──
-const PAGES={m:'pm',b:'pb',n:'pn',e:'pe',d:'pd',a:'pa',h:'ph'};
+const PAGES={m:'pm',b:'pb',n:'pn',e:'pe',d:'pd',x:'px'};
 const KEYS=Object.keys(PAGES);
 window.go=function(tab){
   curTab=tab;
@@ -901,8 +953,8 @@ window.go=function(tab){
     document.getElementById(PAGES[t]).classList.toggle('on',t===tab);
     document.querySelectorAll('.tab')[i].classList.toggle('on',t===tab);
   });
-  if(tab==='a'){annY=curY;renderAnnual();}
-  if(tab==='h') renderHist();
+  if(tab==='x') renderAnalisis();
+
   if(tab==='n'){document.getElementById('nomMes').textContent=MONTHS[curM]+' '+curY;loadNomFields();}
   if(tab==='e'){document.getElementById('empMes').textContent=MONTHS[curM]+' '+curY;loadEmpFields();}
   if(tab==='d'){dailyDate=new Date();subDaily();updateDWho();}
@@ -1560,6 +1612,196 @@ function renderHist(){
     const ds=d.toLocaleDateString('es-CO',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
     return`<div class="hi"><div class="hii">${icon}</div><div class="hib"><div class="him"><span class="chip ${(item.user||'').toLowerCase()}">${item.user||'?'}</span> ${item.description}</div><div class="himt">${item.category?item.category+' · ':''}${ds}</div></div>${item.amount?`<div class="hia ${item.type==='income'?'inc':'exp'}">${fmt(item.amount)}</div>`:''}</div>`;
   }).join('');
+}
+
+// ── ANÁLISIS ──
+window.showAnTab=function(tab){
+  document.querySelectorAll('.an-sec').forEach(s=>s.style.display='none');
+  document.querySelectorAll('.an-tab').forEach(b=>b.classList.remove('on'));
+  document.getElementById('an-'+tab).style.display='block';
+  document.getElementById('at-'+tab).classList.add('on');
+};
+
+async function renderAnalisis(){
+  const lbl=MONTHS[curM]+' '+curY;
+  const el=document.getElementById('xLbl');if(el)el.textContent=lbl;
+  renderSemaforo();
+  renderTendencia();
+  renderHormiga();
+}
+
+function renderSemaforo(){
+  if(!D.categories)return;
+  const tInc=D.income?D.income.reduce((s,r)=>s+(r.value||0),0):0;
+  const tExp=D.categories.reduce((s,c)=>s+planItems(c).reduce((ss,r)=>ss+(r.value||0),0)+(dailyTotals[c.name]||0),0);
+  const tBud=D.categories.reduce((s,c)=>s+planItems(c).reduce((ss,r)=>ss+(r.budget||0),0),0);
+  const avail=(tBud>0?tBud:tInc)-tExp;
+  const pct=tInc>0?Math.round((tExp/tInc)*100):0;
+
+  // Cards resumen
+  const cards=document.getElementById('xCards');
+  if(cards) cards.innerHTML=`
+    <div class="card"><div class="cl">Ingresos</div><div class="cv g">${fmt(tInc)}</div></div>
+    <div class="card"><div class="cl">Gasto real</div><div class="cv r">${fmt(tExp)}</div></div>
+    <div class="card cblue"><div class="cl">Presupuesto</div><div class="cv">${tBud>0?fmt(tBud):'Sin definir'}</div></div>
+    <div class="card"><div class="cl">Disponible</div><div class="cv ${avail>=0?'g':'r'}">${fmt(avail)}</div></div>`;
+
+  // Semáforo
+  const sem=document.getElementById('xSemaforo');if(!sem)return;
+  const cats=D.categories.map(c=>{
+    const act=planItems(c).reduce((s,r)=>s+(r.value||0),0)+(dailyTotals[c.name]||0);
+    const bud=planItems(c).reduce((s,r)=>s+(r.budget||0),0);
+    return{name:c.name,act,bud};
+  }).filter(c=>c.act>0||c.bud>0);
+
+  sem.innerHTML=cats.map(c=>{
+    const pct=c.bud>0?Math.round((c.act/c.bud)*100):0;
+    const dot=c.bud>0?(pct>100?'#D85A30':pct>85?'#BA7517':'#1D9E75'):'#ccc';
+    const badge=c.bud>0?(pct>100?`<span style="font-size:10px;background:#FAECE7;color:#993C1D;border-radius:99px;padding:2px 6px;">${pct}%</span>`
+      :pct>85?`<span style="font-size:10px;background:#FEF3C7;color:#92400E;border-radius:99px;padding:2px 6px;">${pct}%</span>`
+      :`<span style="font-size:10px;background:#E1F5EE;color:#085041;border-radius:99px;padding:2px 6px;">${pct}%</span>`):'';
+    return`<div class="sem-row">
+      <div style="display:flex;align-items:center;flex:1;min-width:0;">
+        <div class="sem-dot" style="background:${dot};"></div>
+        <div><div class="sem-name">${c.name}</div><div class="sem-pct">${c.bud>0?fmt(c.bud-c.act)+' disponible':'Sin presupuesto'}</div></div>
+      </div>
+      <div style="text-align:right;flex-shrink:0;">
+        <div class="sem-val">${fmt(c.act)}</div>
+        <div style="margin-top:3px;">${badge}</div>
+      </div>
+    </div>`;
+  }).join('') || '<div class="empty">Sin datos este mes</div>';
+}
+
+async function renderTendencia(){
+  const tend=document.getElementById('xTendencia');
+  const comp=document.getElementById('xComparacion');
+  if(!tend||!comp)return;
+
+  // Cargar últimos 6 meses
+  const meses=[];
+  for(let i=5;i>=0;i--){
+    let m=curM-i, y=curY;
+    if(m<0){m+=12;y--;}
+    meses.push({m,y,lbl:MSHORT[m]});
+  }
+
+  const datos=await Promise.all(meses.map(async({m,y,lbl})=>{
+    try{
+      const snap=await db.ref(dKey(y,m)).once('value');
+      const d=snap.val();
+      if(!d)return{lbl,exp:0,inc:0};
+      const exp=d.categories?d.categories.reduce((s,c)=>s+(c.items||[]).filter(it=>!it.auto).reduce((ss,r)=>ss+(r.value||0),0),0):0;
+      const inc=d.income?d.income.reduce((s,r)=>s+(r.value||0),0):0;
+      return{lbl,exp,inc};
+    }catch(e){return{lbl,exp:0,inc:0};}
+  }));
+
+  const maxExp=Math.max(...datos.map(d=>d.exp),1);
+  const actual=datos[datos.length-1];
+  const anterior=datos[datos.length-2];
+
+  // Gráfica tendencia
+  tend.innerHTML=datos.map((d,i)=>{
+    const w=Math.round((d.exp/maxExp)*100);
+    const isNow=i===datos.length-1;
+    const color=isNow?'#1D9E75':'#534AB7';
+    return`<div class="trend-row">
+      <div class="trend-lbl">${d.lbl}</div>
+      <div class="trend-track"><div class="trend-fill" style="width:${w}%;background:${color};"></div></div>
+      <div class="trend-val">${fmt(d.exp)}</div>
+    </div>`;
+  }).join('');
+
+  // Comparación vs mes anterior
+  if(!D.categories){comp.innerHTML='';return;}
+  const compCats=D.categories.map(async(cat)=>{
+    const actAct=planItems(cat).reduce((s,r)=>s+(r.value||0),0)+(dailyTotals[cat.name]||0);
+    // buscar mismo cat en mes anterior
+    let pm=curM-1,py=curY;if(pm<0){pm=11;py--;}
+    try{
+      const snap=await db.ref(dKey(py,pm)).once('value');
+      const d=snap.val();
+      const prevCat=d&&d.categories?d.categories.find(c=>c.name===cat.name):null;
+      const actPrev=prevCat?(prevCat.items||[]).filter(it=>!it.auto).reduce((s,r)=>s+(r.value||0),0):0;
+      const diff=actPrev>0?Math.round(((actAct-actPrev)/actPrev)*100):0;
+      return{name:cat.name,act:actAct,prev:actPrev,diff};
+    }catch(e){return{name:cat.name,act:actAct,prev:0,diff:0};}
+  });
+
+  const compData=await Promise.all(compCats);
+  const maxAct=Math.max(...compData.map(c=>c.act),1);
+  comp.innerHTML=compData.filter(c=>c.act>0||c.prev>0).map(c=>{
+    const w=Math.round((c.act/maxAct)*100);
+    const color=c.diff>15?'#D85A30':c.diff>0?'#BA7517':'#1D9E75';
+    const badgeClass=c.diff>15?'badge-r':c.diff>0?'badge-a':'badge-g';
+    const sign=c.diff>0?'+':'';
+    return`<div class="comp-row">
+      <div class="comp-lbl">${c.name}</div>
+      <div class="comp-track"><div class="comp-fill" style="width:${w}%;background:${color};"></div></div>
+      <span class="comp-badge ${badgeClass}">${c.prev>0?sign+c.diff+'%':'Nuevo'}</span>
+    </div>`;
+  }).join('') || '<div class="empty">Sin datos para comparar</div>';
+}
+
+async function renderHormiga(){
+  const horTotal=document.getElementById('xHorTotal');
+  const horCount=document.getElementById('xHorCount');
+  const horCats=document.getElementById('xHorCats');
+  const horDias=document.getElementById('xHorDias');
+  if(!horTotal||!horCats)return;
+
+  try{
+    const snap=await db.ref(`daily/${FBK}/${curY}/${String(curM+1).padStart(2,'0')}`).once('value');
+    const catTotals={};
+    const diaTotals={0:0,1:0,2:0,3:0,4:0,5:0,6:0};
+    let total=0,count=0;
+    const DIAS=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+    snap.forEach(daySnap=>{
+      const dateStr=daySnap.key; // formato DD
+      daySnap.forEach(item=>{
+        const v=item.val();
+        const amt=v.amount||0;
+        total+=amt;count++;
+        if(!catTotals[v.category])catTotals[v.category]=0;
+        catTotals[v.category]+=amt;
+        // día de la semana
+        const d=new Date(curY,curM,parseInt(dateStr));
+        diaTotals[d.getDay()]+=amt;
+      });
+    });
+
+    horTotal.textContent=fmt(total);
+    horCount.textContent=count+' gasto'+(count!==1?'s':'');
+
+    // Top categorías
+    const sortedCats=Object.entries(catTotals).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    horCats.innerHTML=sortedCats.length?sortedCats.map(([cat,val])=>{
+      const icon=ICONS[cat]||'💸';
+      return`<div class="hor-row">
+        <div class="hor-icon">${icon}</div>
+        <div class="hor-name">${cat}</div>
+        <div class="hor-val">${fmt(val)}</div>
+      </div>`;
+    }).join(''):'<div class="empty">Sin gastos hormiga este mes</div>';
+
+    // Días de la semana
+    const maxDia=Math.max(...Object.values(diaTotals),1);
+    horDias.innerHTML=DIAS.map((dia,i)=>{
+      const w=Math.round((diaTotals[i]/maxDia)*100);
+      const color=i===5||i===6?'#D85A30':'#534AB7';
+      return`<div class="trend-row">
+        <div class="trend-lbl">${dia}</div>
+        <div class="trend-track"><div class="trend-fill" style="width:${w||2}%;background:${color};"></div></div>
+        <div class="trend-val">${fmt(diaTotals[i])}</div>
+      </div>`;
+    }).join('');
+
+  }catch(e){
+    horTotal.textContent='$0';
+    horCats.innerHTML='<div class="empty">Sin datos</div>';
+  }
 }
 
 // ── TOAST ──
