@@ -1433,9 +1433,7 @@ function updateDayLabel(){
 function populateCatSel(){
   const sel=document.getElementById('dCat');if(!sel)return;
   const cats=D.categories?D.categories.map(c=>c.name):[];
-  const extras=['Café y mecato','Domicilios','Parqueadero','Recarga / apps','Compras pequeñas','Otros'];
-  const all=[...new Set([...cats,...extras])];
-  sel.innerHTML=all.map(c=>`<option value="${c}">${c}</option>`).join('');
+  sel.innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
 }
 
 window.chDay=function(d){dailyDate=new Date(dailyDate);dailyDate.setDate(dailyDate.getDate()+d);subDaily();};
