@@ -1,18 +1,24 @@
 {
-    "name":  "Finanzas Ibarra-Masso",
-    "short_name":  "Finanzas",
-    "description":  "Control de finanzas personales Ibarra-Masso",
-    "start_url":  "./index.html",
-    "display":  "standalone",
-    "background_color":  "#F5F3EE",
-    "theme_color":  "#1D9E75",
-    "orientation":  "portrait",
-    "icons":  [
-                  {
-                      "src":  "./icono-181.png",
-                      "sizes":  "1254x1254",
-                      "type":  "image/png",
-                      "purpose":  "any maskable"
-                  }
-              ]
+  "name": "Finanzas — Organiza2",
+  "short_name": "Organiza2",
+  "description": "Control de Finanzas Familiares",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5F3EE",
+  "theme_color": "#1D9E75",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icono-181.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icono-181.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
 }
